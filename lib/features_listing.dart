@@ -6,6 +6,8 @@ import 'package:testing/features/fl_charts.dart';
 import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
 
+import 'features/custom_painting_widgets.dart';
+
 class FeaturesListings extends StatelessWidget {
   FeaturesListings({super.key});
 
@@ -25,7 +27,11 @@ class FeaturesListings extends StatelessWidget {
     {
       'title': 'oval shadow',
       'screen': OvalShadow()
-    }
+    },
+    {
+      'title': 'Custom painting widgets',
+      'screen': CustomPaintingWidgets()
+    },
   ];
 
   @override
