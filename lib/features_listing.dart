@@ -7,6 +7,8 @@ import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
 
 import 'features/custom_painting_widgets.dart';
+import 'features/method_channel.dart';
+import 'features/multi_threading.dart';
 
 class FeaturesListings extends StatelessWidget {
   FeaturesListings({super.key});
@@ -31,6 +33,15 @@ class FeaturesListings extends StatelessWidget {
     {
       'title': 'Custom painting widgets',
       'screen': CustomPaintingWidgets()
+    },
+    {
+      'title': 'MultiThreading',
+      'screen': MultiThreadingExample()
+    },
+
+    {
+      'title': 'Method Channel',
+      'screen': MethodChannelExample()
     },
   ];
 
