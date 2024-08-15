@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/code_text.dart';
+import '../utils/common_widget_classes.dart';
+import '../utils/constants.dart';
+
 class FlCharts extends StatefulWidget {
   const FlCharts({super.key});
 
@@ -9,8 +13,6 @@ class FlCharts extends StatefulWidget {
 }
 
 class _FlChartsState extends State<FlCharts> {
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -19,16 +21,37 @@ class _FlChartsState extends State<FlCharts> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
-      body: Container(
-        // height: 300,
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: const LineChartSample2(),
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Fl Charts',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              // height: 300,
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: const LineChartSample2(),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const CommonShowCode(
+              codeText: CodeText.flChartsCode,
+            )
+          ],
+        ),
       ),
     ));
   }
 }
-
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -38,10 +61,7 @@ class LineChartSample2 extends StatefulWidget {
 }
 
 class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
-    Colors.red,
-    Colors.red
-  ];
+  List<Color> gradientColors = [Colors.red, Colors.red];
 
   bool showAvg = false;
 
@@ -87,13 +107,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 10,
-      color: Color(0xffAEAEAE)
-    );
+        fontWeight: FontWeight.w400, fontSize: 10, color: Color(0xffAEAEAE));
     Widget text;
     debugPrint(value.toInt().toString());
-    if(value.toInt() % 10 == 0){
+    if (value.toInt() % 10 == 0) {
       text = Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -101,7 +118,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
           const Text('Km', style: style),
         ],
       );
-    }else{
+    } else {
       text = const Text('', style: style);
     }
 
@@ -113,19 +130,15 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 10,
-      color: Color(0xffAEAEAE)
-    );
+        fontWeight: FontWeight.w400, fontSize: 10, color: Color(0xffAEAEAE));
     String text;
-    if([0,50,100,120,140].contains(value.toInt())){
-      if(value.toInt() > 120){
+    if ([0, 50, 100, 120, 140].contains(value.toInt())) {
+      if (value.toInt() > 120) {
         text = '120+ km/h';
-      }else{
+      } else {
         text = '${value.toInt()} km/h';
       }
-
-    }else{
+    } else {
       return Container();
     }
 
@@ -142,7 +155,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
         drawHorizontalLine: false,
         getDrawingVerticalLine: (value) {
           return const FlLine(
-            dashArray: [8,8],
+            dashArray: [8, 8],
             color: Color(0xffE4EAF0),
             strokeWidth: 1,
           );
@@ -177,16 +190,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
         ),
       ),
       borderData: FlBorderData(
-        show: true,
-        border: const Border(
-          left: BorderSide(
-            color: Color(0xffE4EAF0)
-          ),
-          bottom: BorderSide(
-              color: Color(0xffE4EAF0)
-          )
-        )
-      ),
+          show: true,
+          border: const Border(
+              left: BorderSide(color: Color(0xffE4EAF0)),
+              bottom: BorderSide(color: Color(0xffE4EAF0)))),
       minX: 10,
       maxX: 80,
       minY: 0,

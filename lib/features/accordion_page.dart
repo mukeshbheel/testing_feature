@@ -2,10 +2,14 @@ import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:testing/utils/constants.dart';
+
+import '../utils/code_text.dart';
+import '../utils/common_widget_classes.dart';
 
 /// Main example page
 class AccordionPage extends StatelessWidget //__
-    {
+{
   static const headerStyle = TextStyle(
       color: Color(0xffffffff), fontSize: 18, fontWeight: FontWeight.bold);
   static const contentStyleHeader = TextStyle(
@@ -13,7 +17,7 @@ class AccordionPage extends StatelessWidget //__
   static const contentStyle = TextStyle(
       color: Color(0xff999999), fontSize: 14, fontWeight: FontWeight.normal);
   static const loremIpsum =
-  '''Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.''';
+      "Lorem ipsum is typically a corrupted version of 'De finibus bonorum et malorum', a 1st century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.";
   static const slogan =
       'Do not forget to play around with all sorts of colors, backgrounds, borders, etc.';
 
@@ -21,49 +25,67 @@ class AccordionPage extends StatelessWidget //__
 
   @override
   build(context) => Scaffold(
-    backgroundColor: Colors.blueGrey[100],
-    appBar: AppBar(
-      title: const Text('Accordion'),
-    ),
-    body: Accordion(
-      headerBorderColor: Colors.blueGrey,
-      headerBorderColorOpened: Colors.transparent,
-      // headerBorderWidth: 1,
-      headerBackgroundColorOpened: Colors.green,
-      contentBackgroundColor: Colors.white,
-      contentBorderColor: Colors.green,
-      contentBorderWidth: 3,
-      contentHorizontalPadding: 20,
-      scaleWhenAnimating: true,
-      openAndCloseAnimation: true,
-      headerPadding:
-      const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-      sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
-      sectionClosingHapticFeedback: SectionHapticFeedback.light,
-      children: [
-        AccordionSection(
-          isOpen: true,
-          leftIcon: const Icon(Icons.input, color: Colors.white),
-          header: const Text('Profile details', style: headerStyle),
-          contentHorizontalPadding: 40,
-          contentVerticalPadding: 20,
-          content: const MyInputForm(),
+        backgroundColor: Colors.blueGrey[100],
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          title: Text(
+            'Accordion',
+            style: googleFontStyle(color: Colors.white),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
-        AccordionSection(
-          isOpen: true,
-          leftIcon: const Icon(Icons.input, color: Colors.white),
-          header: const Text('other details', style: headerStyle),
-          contentHorizontalPadding: 40,
-          contentVerticalPadding: 20,
-          content: const MyInputForm(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Accordion(
+                headerBorderColor: Colors.blueGrey,
+                headerBorderColorOpened: Colors.transparent,
+                // headerBorderWidth: 1,
+                headerBackgroundColorOpened: Colors.green,
+                contentBackgroundColor: Colors.white,
+                contentBorderColor: Colors.green,
+                contentBorderWidth: 3,
+                contentHorizontalPadding: 20,
+                scaleWhenAnimating: true,
+                openAndCloseAnimation: true,
+                headerPadding:
+                    const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+                sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
+                sectionClosingHapticFeedback: SectionHapticFeedback.light,
+                children: [
+                  AccordionSection(
+                    isOpen: true,
+                    leftIcon: const Icon(Icons.input, color: Colors.white),
+                    header: const Text('Profile details', style: headerStyle),
+                    contentHorizontalPadding: 40,
+                    contentVerticalPadding: 20,
+                    content: const MyInputForm(),
+                  ),
+                  AccordionSection(
+                    isOpen: true,
+                    leftIcon: const Icon(Icons.input, color: Colors.white),
+                    header: const Text('other details', style: headerStyle),
+                    contentHorizontalPadding: 40,
+                    contentVerticalPadding: 20,
+                    content: const MyInputForm(),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const CommonShowCode(
+                codeText: CodeText.accordianCode,
+              )
+            ],
+          ),
         ),
-      ],
-    ),
-  );
+      );
 } //__
 
 class MyInputForm extends StatelessWidget //__
-    {
+{
   const MyInputForm({super.key});
 
   @override
@@ -89,7 +111,7 @@ class MyInputForm extends StatelessWidget //__
 }
 
 class MyDataTable extends StatelessWidget //__
-    {
+{
   const MyDataTable({super.key});
 
   @override
@@ -105,7 +127,7 @@ class MyDataTable extends StatelessWidget //__
             numeric: true),
         DataColumn(
             label:
-            Text('Description', style: AccordionPage.contentStyleHeader)),
+                Text('Description', style: AccordionPage.contentStyleHeader)),
         DataColumn(
             label: Text('Price', style: AccordionPage.contentStyleHeader),
             numeric: true),
@@ -156,7 +178,7 @@ class MyDataTable extends StatelessWidget //__
 }
 
 class MyNestedAccordion extends StatelessWidget //__
-    {
+{
   const MyNestedAccordion({super.key});
 
   @override
@@ -175,7 +197,7 @@ class MyNestedAccordion extends StatelessWidget //__
           headerBackgroundColor: Colors.black38,
           headerBackgroundColorOpened: Colors.black54,
           header:
-          const Text('Nested Section #1', style: AccordionPage.headerStyle),
+              const Text('Nested Section #1', style: AccordionPage.headerStyle),
           content: const Text(AccordionPage.loremIpsum,
               style: AccordionPage.contentStyle),
           contentHorizontalPadding: 20,
@@ -185,7 +207,7 @@ class MyNestedAccordion extends StatelessWidget //__
           isOpen: true,
           leftIcon: const Icon(Icons.compare_rounded, color: Colors.white),
           header:
-          const Text('Nested Section #2', style: AccordionPage.headerStyle),
+              const Text('Nested Section #2', style: AccordionPage.headerStyle),
           headerBackgroundColor: Colors.black38,
           headerBackgroundColorOpened: Colors.black54,
           contentBorderColor: Colors.black54,

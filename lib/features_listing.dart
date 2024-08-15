@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:testing/features/accordion_page.dart';
+import 'package:testing/features/clippath_custom_container_shape.dart';
 import 'package:testing/features/fl_charts.dart';
 import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
+import 'package:testing/utils/constants.dart';
 
 import 'features/custom_painting_widgets.dart';
 import 'features/method_channel.dart';
@@ -16,32 +21,37 @@ class FeaturesListings extends StatelessWidget {
   List features = [
     {
       'title': 'Accordian',
-      'screen': AccordionPage()
+      'screen': const AccordionPage()
     },
     {
       'title': 'mapple',
-      'screen': MapplesFunction()
+      'screen': const MapplesFunction()
     },
     {
       'title': 'fl_charts',
-      'screen': FlCharts()
+      'screen': const FlCharts()
     },
     {
       'title': 'oval shadow',
-      'screen': OvalShadow()
+      'screen': const OvalShadow()
     },
     {
       'title': 'Custom painting widgets',
-      'screen': CustomPaintingWidgets()
+      'screen': const CustomPaintingWidgets()
     },
     {
       'title': 'MultiThreading',
-      'screen': MultiThreadingExample()
+      'screen': const MultiThreadingExample()
     },
 
     {
       'title': 'Method Channel',
-      'screen': MethodChannelExample()
+      'screen': const MethodChannelExample()
+    },
+
+    {
+      'title': 'Clip Path custom Container',
+      'screen': const ClippathCustomContainerShape()
     },
   ];
 
@@ -50,34 +60,38 @@ class FeaturesListings extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Features'),
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          title: Text('Features', style: googleFontStyle(color: Colors.white),
+          ),
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              SizedBox(height: 20,),
-              ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index)=>InkWell(
-                  onTap: (){
-                    Get.to(features[index]['screen']);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.featured_play_list, size: 20, color: Colors.blue,),
-                      SizedBox(width: 20,),
-                      Text('${features[index]['title']}', style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600
-                      ),)
-                    ],
-                  ),
-                ),
-                separatorBuilder: (context, index)=>SizedBox(height: 10,),
-                itemCount: features.length,
-              ),
-
+              const SizedBox(height: 20,),
+              Wrap(
+                children: [
+                  ...features.map((item)=>InkWell(
+                    onTap: (){
+                      Get.to(item['screen']);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(2),
+                      padding: const EdgeInsets.all(2),
+                      width: (MediaQuery.of(context).size.width-60)/3,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: getRandomColor(),
+                      ),
+                      child: Center(
+                        child: Text(item['title'].toString().capitalizeFirst!, style: googleFontStyle(color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                      ),
+                    ),
+                  ))
+                ],
+              )
             ],
           ),
         ),
