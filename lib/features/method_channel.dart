@@ -22,7 +22,7 @@ class _MultiThreadingExampleState extends State<MethodChannelExample> {
 
   Future<void> _getBatterylevel(context) async {
     try {
-      final result = platform.invokeMethod<int>("getBatteryLevel");
+      final result = await platform.invokeMethod<int>("getBatteryLevel");
       setState(() {
         _batteryLevel = 'Battery Level is $result';
       });
