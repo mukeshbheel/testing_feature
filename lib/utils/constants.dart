@@ -11,3 +11,23 @@ const String mapIAccessToken = "b8f5d20027649c61f502a4a10f93fb1a";
  final googleFontStyle = GoogleFonts.aBeeZee;
 
  getRandomColor()=>Colors.primaries[Random().nextInt(Colors.primaries.length)];
+
+
+ const String color00 = "firstColorLight";
+ const String color01 = "firstColor";
+ const String color02 = "firstColorDark";
+
+ const String color10 = "secondColorLight";
+ const String color11 = "secondColor";
+ const String color12 = "secondColorDark";
+
+ const String color20 = "thirdColorLight";
+ const String color21 = "thirdColor";
+ const String color22 = "thirdColorDark";
+
+ const String color30 = "forthColorLight";
+ const String color31 = "forthColor";
+ const String color32 = "forthColorDark";
+
+ const String colorWh = "whiteColor";
+ const String colorBl = "blackColor";
