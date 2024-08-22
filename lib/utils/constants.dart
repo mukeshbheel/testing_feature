@@ -10,6 +10,9 @@ const String mapIAccessToken = "b8f5d20027649c61f502a4a10f93fb1a";
 
  final googleFontStyle = GoogleFonts.aBeeZee;
 
+
+ //---------------------------ludo constants----------------------------------------------->
+
  getRandomColor()=>Colors.primaries[Random().nextInt(Colors.primaries.length)];
 
 

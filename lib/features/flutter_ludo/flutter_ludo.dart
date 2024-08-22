@@ -11,11 +11,6 @@ import 'package:testing/utils/common_button.dart';
 import '../../utils/constants.dart';
 
 
-
-//--------------green pieces----------------->
-LudoPiece? green1;
-
-
 class FlutterLudo extends StatefulWidget {
   FlutterLudo({super.key});
 
@@ -25,279 +20,274 @@ class FlutterLudo extends StatefulWidget {
 
 class _FlutterLudoState extends State<FlutterLudo> {
   final ludoController = LudoController();
+  Map selectedToken = {};
+  int selectedPosition = 0;
+  bool showPositions = false;
 
   @override
-  initState(){
-    SchedulerBinding.instance.scheduleFrameCallback((timeStamp){
-
+  initState() {
+    SchedulerBinding.instance.scheduleFrameCallback((timeStamp) {
       ludoController.initState();
     });
     super.initState();
-  }
-
-  List<int> lightGreenColorBox = [1,2,3,4,5,6,16,21,31,36,46,51,61,66,16,76,77,78,79,80,81];
-  List<int> greenColorBox = [17,18,19,20,32,35,47,50,62,63,64,65,92,107,108,109,110,111];
-
-  List<int> lightYellowColorBox = [10,11,12,13,14,15,25,30,40,45,55,60,70,75,85,86,87,88,89,90];
-  List<int> yellowColorBox = [26,27,28,29,41,44,56,59,71,72,73,74,23,24,38,53,68,83];
-
-  List<int> lightRedColorBox = [136,137,138,139,140,141,151,156,166,171,181,186,196,201,211,212,213,214,215,216];
-  List<int> redColorBox = [152,153,154,155,167,170,182,185,197,198,199,200,202,203,143,158,173,188];
-  List<int> redTokenBase = [168,169,183,184];
-
-  List<int> lightBlueColorBox = [145,146,147,148,149,150,160,165,175,180,190,195,205,210,220,221,222,223,224,225];
-  List<int> blueColorBox = [161,162,163,164,176,179,191,194,206,207,208,209,115,116,117,118,119,134];
-
-  List<int> greyColorBox = [97,98,99,112,113,114,127,128,129,189,123,37,103];
-
-  Color getColor(int i){
-    if(lightGreenColorBox.contains(i+1))return Colors.greenAccent;
-    else if(greenColorBox.contains(i+1))return Colors.green;
-    else if(lightYellowColorBox.contains(i+1))return Colors.yellowAccent;
-    else if(yellowColorBox.contains(i+1))return Colors.yellow;
-    else if(yellowColorBox.contains(i+1))return Colors.yellow;
-    else if(lightRedColorBox.contains(i+1))return Colors.redAccent;
-    else if(redColorBox.contains(i+1))return Colors.red;
-    else if(lightBlueColorBox.contains(i+1))return Colors.blueAccent;
-    else if(blueColorBox.contains(i+1))return Colors.blue;
-    else if(greyColorBox.contains(i+1))return Colors.grey;
-    return Colors.white;
-  }
-
-  Color getTokenColor(String color){
-    switch(color){
-      case "green":
-        return Colors.green;
-      case "red":
-        return Colors.red;
-      case "blue":
-        return Colors.blue;
-      case "yellow":
-        return Colors.yellow;
-      default:
-        return Colors.white;
-    }
-  }
-
-  List allTokens = [
-    {
-      "id" : 1,
-      "color":"green",
-      "position":33
-    },
-    {
-      "id" : 2,
-      "color":"green",
-      "position":34
-    },
-    {
-      "id" : 3,
-      "color":"green",
-      "position":48
-    },
-    {
-      "id" : 4,
-      "color":"green",
-      "position":49
-    },
-
-
-    {
-      "id" : 5,
-      "color":"yellow",
-      "position":42
-    },
-    {
-      "id" : 6,
-      "color":"yellow",
-      "position":43
-    },
-    {
-      "id" : 7,
-      "color":"yellow",
-      "position":57
-    },
-    {
-      "id" : 8,
-      "color":"yellow",
-      "position":58
-    },
-
-
-    {
-      "id" : 9,
-      "color":"red",
-      "position":168
-    },
-    {
-      "id" : 10,
-      "color":"red",
-      "position":169
-    },
-    {
-      "id" : 11,
-      "color":"red",
-      "position":183
-    },
-    {
-      "id" : 12,
-      "color":"red",
-      "position":184
-    },
-
-
-
-    {
-      "id" : 13,
-      "color":"blue",
-      "position":177
-    },
-    {
-      "id" : 14,
-      "color":"blue",
-      "position":178
-    },
-    {
-      "id" : 15,
-      "color":"blue",
-      "position":192
-    },
-    {
-      "id" : 16,
-      "color":"blue",
-      "position":193
-    },
-  ];
-
-  List pathForRed = [202,187,172,157,142,126,125,124,123,122,121,106,91,92,93,94,95,96,82,67,52,37,22,7,8,9,24,39,54,69,84,100,101,102,103,104,105,120,135,134,133,132,131,130,144,159,174,189,204,219,218,203,188,173,158,143,0];
-
-  moveToken({required Map token, required int steps}){
-    int index = allTokens.indexWhere((t)=>t["id"] == token['id']);
-    if(token['color'] == "red"){
-      if(redTokenBase.contains(token['position'])){
-        if(steps == 6){
-          setState(() {
-            allTokens[index] = {
-              ...token,
-              "position":pathForRed[0]
-            };
-            steps = 0;
-          });
-        }
-      }else{
-        int pathIndex = pathForRed.indexOf(token['position']);
-        int newPositionIndex = pathIndex + steps;
-        if(newPositionIndex < pathForRed.length){
-          setState(() {
-            allTokens[index] = {
-              ...token,
-              "position":pathForRed[newPositionIndex]
-            };
-            steps = 0;
-          });
-        }
-
-      }
-    }
-  }
-
-  getToken(i){
-    int index = allTokens.indexWhere((token)=>token['position'] == (i+1));
-    if(index != -1){
-      return allTokens[index];
-    }
-  }
-
-   int getRandomNumber(){
-     Random random = new Random();
-     int randomNumber = random.nextInt(6);
-     return randomNumber + 1;
-  }
-
-  bool diceIsRolling = false;
-  int steps = 0;
-
-  rollDice()async{
-    setState(() {
-      diceIsRolling = true;
-    });
-    await Future.delayed(Duration(seconds: 1),(){
-      setState(() {
-        steps = getRandomNumber();
-        diceIsRolling = false;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
       init: ludoController,
-        builder: (_)=>Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Text(
-          'Flutter Ludo',
-          style: googleFontStyle(color: Colors.white),
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          title: Text(
+            'Flutter Ludo',
+            style: googleFontStyle(color: Colors.white),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body:
-      // Obx(
-      //         ()=>
-                  SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Wrap(
+        body:
+            Obx(
+                    ()=>
+            SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: ludoController.paddingHorizontal, vertical: 10),
+          child: Column(
+            children: [
+              // Text('steps : ${ludoController.steps.value}'),
+
+              SizedBox(height: 30,),
+              if(ludoController.firstPlace.value != 0)
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+
+                    if(ludoController.firstPlace.value != 0)
+                      Text("First Place : Player ${ludoController.firstPlace()}", style: googleFontStyle(fontSize: 18, color: Colors.white,),),
+
+                    if(ludoController.secondPlace.value != 0)
+                      Text("Second Place : Player ${ludoController.secondPlace()}", style: googleFontStyle(fontSize: 18, color: Colors.white,),),
+
+                    if(ludoController.thirdPlace.value != 0)
+                      Text("Third Place : Player ${ludoController.thirdPlace()}", style: googleFontStyle(fontSize: 18, color: Colors.white,),),
+
+                    if(ludoController.thirdPlace.value != 0)
+                      Text("Fourth Place : Player ${ludoController.fourthPlace()}", style: googleFontStyle(fontSize: 18, color: Colors.white,),),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30,),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text("${ludoController.getPlayerTurnName()} Player's Turn", style: googleFontStyle(fontSize: 18, color: getButtomColor(ludoController.currentPlayerTurn.value),),),
+              ),
+              SizedBox(height: 30,),
+              Center(
+                  child: Wrap(
                 children: [
-                  ...List.generate(225, (i){
-                    var token = getToken(i);
+                  ...List.generate(225, (i) {
+                    var token = ludoController.getToken(i);
                     return Container(
-                      width: Get.size.width/15,
-                      height: Get.size.width/15,
+                      width: (Get.size.width - ludoController.paddingHorizontal*2) / 15,
+                      height: (Get.size.width - ludoController.paddingHorizontal*2) / 15,
                       decoration: BoxDecoration(
-                        color: getColor(i),
-                        border: Border.all(color: Colors.black.withOpacity(0.1), width: 0.5)
-                      ),
+                          color: ludoController.getColor(i),
+                          border: Border.all(
+                              color: ludoController.playingPath.contains(i+1) || ludoController.greenColorBox.contains(i+1) || ludoController.yellowColorBox.contains(i+1) || ludoController.redColorBox.contains(i+1) || ludoController.blueColorBox.contains(i+1)  ? Colors.black.withOpacity(0.5) :  Colors.transparent ,
+                              // color: Colors.black.withOpacity(0.4),
+                              width: 0.5)),
                       child: Center(
-                        child: token != null ? InkWell(
-                          onTap: (){
-                            if(steps == 0)return;
-                            moveToken(token: token, steps: steps);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white
-                            ),
-                              child: Icon(Icons.token, size: 16, color: getTokenColor(token['color'],),
-                              ),
-                          ),
-                        ) : Text(
-                          ""
-                          // "${i+1}"
-                        ),
+                        child: token != null
+                            ? InkWell(
+                                onTap: () {
+                                  if (ludoController.steps.value == 0) return;
+                                  ludoController.moveToken(
+                                    token: token,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white),
+                                  child: Icon(
+                                    Icons.token,
+                                    size: 16,
+                                    color: ludoController.getTokenColor(token['color']),
+                                  ),
+                                ),
+                              )
+                            : Text(
+                          !showPositions ?
+                            ""
+                                :"${i+1}", style: googleFontStyle(fontSize: 8),
+                                ),
                       ),
                     );
                   })
                 ],
-              )
-            ),
-            SizedBox(height: 30,),
-            if(steps != 0 || diceIsRolling)
-            SizedBox(width: 100, child: diceIsRolling ? Lottie.asset( "assets/dice_roll_gif.json"): Image.asset( "assets/dice_${steps}.png"),),
-            SizedBox(height: 30,),
-            SizedBox(width: 100, child: CommonButton.mainButton(text: "Roll Dice", onTap: (){
-              rollDice();
-            }),)
-          ],
+              )),
+              SizedBox(height: 30),
+              if (ludoController.diceNumber.value != 0 || ludoController.diceIsRolling.value)
+                ludoController.diceIsRolling.value
+                    ? SizedBox(
+                        width: 100,
+                        height: 70,
+                        child: Lottie.asset("assets/dice_roll_gif.json"),
+                      )
+                    : SizedBox(
+                        width: 100,
+                        height: 70,
+                        child: Center(
+                          child: SizedBox(
+                            width: 50,
+                            child: Image.asset("assets/dice_${ludoController.diceNumber.value}.png"),
+                          ),
+                        ),
+                      ),
+              SizedBox(
+                height: 30,
+              ),
+              if(ludoController.steps.value == 0)
+              SizedBox(
+                width: 100,
+                child: CommonButton.mainButton(
+                    text: "Roll Dice",
+                    colorBg: getButtomColor(ludoController.currentPlayerTurn.value),
+                    onTap: () {
+                      ludoController.rollDice();
+                    }),
+              ),
+              
+              SizedBox(height: 10,),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.black)
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Show Positions : ", style: googleFontStyle(color: Colors.white),),
+                          Checkbox(value: showPositions, onChanged: (value){
+                            setState(() {
+                              showPositions = value!;
+                            });
+                          }),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Token : ", style: googleFontStyle(color: Colors.white),),
+                          PopupMenuButton(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.black
+                              ),
+                              child: Text(selectedToken.isNotEmpty ? "${selectedToken['id']}"  :'select token', style: googleFontStyle(color: Colors.white),),
+                            ),
+                            // initialValue: selectedItem,
+                            onSelected: (item) {
+                              setState(() {
+                                selectedToken = item;
+                              });
+                            },
+                            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                              ...List.generate(ludoController.allTokens.length, (index){
+                                return PopupMenuItem(
+                                  value: ludoController.allTokens[index],
+                                  child: Text('${ludoController.allTokens[index]['id']} - ${ludoController.allTokens[index]['color']} - Current Position : ${ludoController.allTokens[index]['position']}'),
+                                );
+                              }),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Position : ", style: googleFontStyle(color: Colors.white),),
+                          PopupMenuButton(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.black
+                              ),
+                              child: Text(selectedPosition != 0 ? "${selectedPosition}"  :'select position', style: googleFontStyle(color: Colors.white),),
+                            ),
+                            // initialValue: selectedItem,
+                            onSelected: (item) {
+                              setState(() {
+                                selectedPosition = item;
+                              });
+                            },
+                            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                              ...List.generate(225, (index){
+                                return PopupMenuItem(
+                                  value: index+1,
+                                  child: Text('${index+1}'),
+                                );
+                              }),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    CommonButton.mainButton(text: "set position",onTap: (){
+                      debugPrint("$selectedToken");
+                      debugPrint("$selectedPosition");
+                      ludoController.setTokenPosition(token: selectedToken, newPosition: selectedPosition);
+                      setState(() {});
+                    }),
+
+                  ],
+                ),
+              ),
+              SizedBox(height: 30,),
+            ],
+          ),
+        ),
         ),
       ),
-      // ),
-    )
     );
   }
+}
+
+Color getButtomColor(int i){
+  if(i == 1)return Colors.red;
+  if(i == 2)return Colors.green;
+  if(i == 3)return Colors.yellow;
+  if(i == 4)return Colors.blue;
+  return Colors.black;
 }
