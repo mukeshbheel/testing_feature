@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../utils/constants.dart';
 
 class LudoController extends GetxController{
-  double paddingHorizontal = 20;
+  double paddingHorizontal = 0;
   RxInt firstPlace = 0.obs;
   RxInt secondPlace = 0.obs;
   RxInt thirdPlace = 0.obs;
@@ -37,6 +37,7 @@ class LudoController extends GetxController{
     81
   ];
   List<int> greenColorBox = [
+    97,
     17,
     18,
     19,
@@ -80,6 +81,7 @@ class LudoController extends GetxController{
     90
   ];
   List<int> yellowColorBox = [
+    99,
     26,
     27,
     28,
@@ -123,6 +125,7 @@ class LudoController extends GetxController{
     216
   ];
   List<int> redColorBox = [
+    127,
     152,
     153,
     154,
@@ -166,6 +169,7 @@ class LudoController extends GetxController{
     225
   ];
   List<int> blueColorBox = [
+    129,
     161,
     162,
     163,
@@ -187,20 +191,23 @@ class LudoController extends GetxController{
   ];
 
   List<int> greyColorBox = [
-    97,
-    98,
-    99,
-    112,
-    113,
-    114,
-    127,
-    128,
-    129,
+    // 97,
+    // 98,
+    // 99,
+    // 112,
+    // 113,
+    // 114,
+    // 127,
+    // 128,
+    // 129,
     189,
     123,
     37,
     103
   ];
+
+  List<int> defaultColorBox = [98, 112,113,114,128];
+  List<int> blackColorBox = [97,99,127,129,113];
 
 
   List<int> redTokenBase = [168, 169, 183, 184];
@@ -307,6 +314,8 @@ class LudoController extends GetxController{
   Color getColor(int i) {
     if (lightGreenColorBox.contains(i + 1)) {
       return Colors.greenAccent;
+    } else if (blackColorBox.contains(i + 1)) {
+      return Colors.black;
     } else if (greenColorBox.contains(i + 1)) {
       return Colors.green;
     } else if (lightYellowColorBox.contains(i + 1)) {
@@ -323,6 +332,8 @@ class LudoController extends GetxController{
       return Colors.blue;
     } else if (greyColorBox.contains(i + 1)) {
       return getRandomColor();
+    } else if (defaultColorBox.contains(i + 1)) {
+      return Colors.grey.withOpacity(.1);
     }
     return Colors.white;
   }
@@ -343,9 +354,20 @@ class LudoController extends GetxController{
   }
 
   getToken(i) {
-    int index = allTokens.indexWhere((token) => token['position'] == (i + 1));
-    if (index != -1) {
-      return allTokens.value[index];
+    List tokens = checkForTokensAtPosition(i+1);
+    if(tokens.isEmpty){
+      return null;
+    }else{
+      if(tokens.length == 1){
+        return tokens[0];
+      }else{
+        int index = tokens.indexWhere((t) => t['color'] == getPlayerColor());
+        if (index != -1) {
+          return tokens[index];
+        }else{
+          return tokens[0];
+        }
+      }
     }
   }
 
@@ -362,16 +384,17 @@ class LudoController extends GetxController{
 
         diceIsRolling.value = false;
         if(steps.value < 6){
-          if(checkAllTokenAreInBase()){
+          if(checkAllTokenAreInBase() || !checkIfTheMoveIsPlayable()){
             steps.value = 0;
             nextTurn();
           }
         }else if(steps.value == 6){
-          if(checkAllTokenAreInBase()){
-
+          if(!checkAllTokenAreInBase() && !checkIfTheMoveIsPlayable()){
+            steps.value = 0;
+            nextTurn();
           }
         }else if(steps > 6){
-          if(checkAllTokenAreInBase()){
+          if(checkAllTokenAreInBase() || !checkIfTheMoveIsPlayable()){
             steps.value = 0;
             nextTurn();
           }
@@ -434,8 +457,8 @@ class LudoController extends GetxController{
 
   }
 
-  getPlayerColor(){
-    switch(currentPlayerTurn){
+  getPlayerColor({int? player}){
+    switch(player ?? currentPlayerTurn.value){
       case 1:
         return "red";
       case 2:
@@ -450,6 +473,7 @@ class LudoController extends GetxController{
   moveToken({
     required Map<String, Object> token,
   }) {
+    debugPrint("getPlayerColor() != token['color'] : ${getPlayerColor() != token['color']}");
     if(getPlayerColor() != token['color'])return;
 
     int index = findTokenIndex(token);
@@ -569,6 +593,45 @@ class LudoController extends GetxController{
       }
     });
     return completed;
+  }
+
+  List getPlayerPath(){
+    switch(currentPlayerTurn.value){
+      case 1:
+        return pathForRed;
+      case 2:
+        return pathForRed;
+      case 3:
+        return pathForYellow;
+      case 4:
+        return pathForBlue;
+      default:
+        return [];
+    }
+  }
+
+  bool checkIfTheMoveIsPlayable(){
+    String currentPlayerColor = getPlayerColor();
+    List currentPlayerPath = getPlayerPath();
+    int count = 0;
+    debugPrint("currentPlayerColor : ${currentPlayerColor}");
+    debugPrint("currentPlayerPath : ${currentPlayerPath}");
+    debugPrint("currentPlayerPath length : ${currentPlayerPath.length}");
+    for(int i = 0; i < allTokens.length; i++){
+      if(count == 4) break;
+      if(allTokens.value[i]['color'] == currentPlayerColor){
+        debugPrint("${allTokens.value[i]}");
+        count++;
+        int positionIndex = currentPlayerPath.indexOf(allTokens.value[i]['position']);
+        debugPrint("count : ${count}");
+        // debugPrint("count : ${count}");
+        debugPrint("positionIndex : ${positionIndex}");
+        debugPrint("steps : ${steps}");
+        // debugPrint("count : ${count}");
+        if((steps.value + positionIndex) < currentPlayerPath.length)return true;
+      }
+    }
+    return false;
   }
 
   initState(){
