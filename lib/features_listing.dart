@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:testing/features/accordion_page.dart';
 import 'package:testing/features/clippath_custom_container_shape.dart';
 import 'package:testing/features/fl_charts.dart';
-import 'package:testing/features/flutter_animation_basics.dart';
+import 'package:testing/features/flutter_animation_basics/flutter_animation_basics.dart';
 import 'package:testing/features/flutter_ludo/flutter_ludo.dart';
 import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
@@ -58,7 +58,7 @@ class FeaturesListings extends StatelessWidget {
 
     {
       'title': 'Flutter Animation Basics',
-      'screen': const FlutterAnimationBasics()
+      'screen': FlutterAnimationBasics()
     },
 
 

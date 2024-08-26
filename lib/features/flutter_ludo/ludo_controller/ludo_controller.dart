@@ -13,198 +13,19 @@ class LudoController extends GetxController{
   RxInt fourthPlace = 0.obs;
 
 
-  List<int> lightGreenColorBox = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    16,
-    21,
-    31,
-    36,
-    46,
-    51,
-    61,
-    66,
-    16,
-    76,
-    77,
-    78,
-    79,
-    80,
-    81
-  ];
-  List<int> greenColorBox = [
-    97,
-    17,
-    18,
-    19,
-    20,
-    32,
-    35,
-    47,
-    50,
-    62,
-    63,
-    64,
-    65,
-    92,
-    107,
-    108,
-    109,
-    110,
-    111
-  ];
+  List<int> lightGreenColorBox = [1,2,3,4,5,6,16,21,31,36,46,51,61,66,16,76,77,78,79,80,81];
+  List<int> greenColorBox = [97,17,18,19,20,32,35,47,50,62,63,64,65,92,107,108,109,110,111];
 
-  List<int> lightYellowColorBox = [
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    25,
-    30,
-    40,
-    45,
-    55,
-    60,
-    70,
-    75,
-    85,
-    86,
-    87,
-    88,
-    89,
-    90
-  ];
-  List<int> yellowColorBox = [
-    99,
-    26,
-    27,
-    28,
-    29,
-    41,
-    44,
-    56,
-    59,
-    71,
-    72,
-    73,
-    74,
-    23,
-    24,
-    38,
-    53,
-    68,
-    83
-  ];
+  List<int> lightYellowColorBox = [10,11,12,13,14,15,25,30,40,45,55,60,70,75,85,86,87,88,89,90];
+  List<int> yellowColorBox = [99,26,27,28,29,41,44,56,59,71,72,73,74,23,24,38,53,68,83];
 
-  List<int> lightRedColorBox = [
-    136,
-    137,
-    138,
-    139,
-    140,
-    141,
-    151,
-    156,
-    166,
-    171,
-    181,
-    186,
-    196,
-    201,
-    211,
-    212,
-    213,
-    214,
-    215,
-    216
-  ];
-  List<int> redColorBox = [
-    127,
-    152,
-    153,
-    154,
-    155,
-    167,
-    170,
-    182,
-    185,
-    197,
-    198,
-    199,
-    200,
-    202,
-    203,
-    143,
-    158,
-    173,
-    188
-  ];
+  List<int> lightRedColorBox = [136,137,138,139,140,141,151,156,166,171,181,186,196,201,211,212,213,214,215,216];
+  List<int> redColorBox = [127,152,153,154,155,167,170,182,185,197,198,199,200,202,203,143,158,173,188];
 
-  List<int> lightBlueColorBox = [
-    145,
-    146,
-    147,
-    148,
-    149,
-    150,
-    160,
-    165,
-    175,
-    180,
-    190,
-    195,
-    205,
-    210,
-    220,
-    221,
-    222,
-    223,
-    224,
-    225
-  ];
-  List<int> blueColorBox = [
-    129,
-    161,
-    162,
-    163,
-    164,
-    176,
-    179,
-    191,
-    194,
-    206,
-    207,
-    208,
-    209,
-    115,
-    116,
-    117,
-    118,
-    119,
-    134
-  ];
+  List<int> lightBlueColorBox = [145,146,147,148,149,150,160,165,175,180,190,195,205,210,220,221,222,223,224,225];
+  List<int> blueColorBox = [129,161,162,163,164,176,179,191,194,206,207,208,209,115,116,117,118,119,134];
 
-  List<int> greyColorBox = [
-    // 97,
-    // 98,
-    // 99,
-    // 112,
-    // 113,
-    // 114,
-    // 127,
-    // 128,
-    // 129,
-    189,
-    123,
-    37,
-    103
-  ];
+  List<int> greyColorBox = [189,123,37,103];
 
   List<int> defaultColorBox = [98, 112,113,114,128];
   List<int> blackColorBox = [97,99,127,129,113];
@@ -216,65 +37,7 @@ class LudoController extends GetxController{
   List<int> blueTokenBase = [177,178,192,193];
 
   List playingPath = [91,93,94,95,96,82,67,52,22,7,8,9,24,39,54,69,84,100,101,102,104,105,120,135,133,132,131,130,144,159,174,204,219,218,217,187,172,157,142,126,125,124,122,121,106];
-  List pathForRed = [
-    202,
-    187,
-    172,
-    157,
-    142,
-    126,
-    125,
-    124,
-    123,
-    122,
-    121,
-    106,
-    91,
-    92,
-    93,
-    94,
-    95,
-    96,
-    82,
-    67,
-    52,
-    37,
-    22,
-    7,
-    8,
-    9,
-    24,
-    39,
-    54,
-    69,
-    84,
-    100,
-    101,
-    102,
-    103,
-    104,
-    105,
-    120,
-    135,
-    134,
-    133,
-    132,
-    131,
-    130,
-    144,
-    159,
-    174,
-    189,
-    204,
-    219,
-    218,
-    203,
-    188,
-    173,
-    158,
-    143,
-    0
-  ];
+  List pathForRed = [202,187,172,157,142,126,125,124,123,122,121,106,91,92,93,94,95,96,82,67,52,37,22,7,8,9,24,39,54,69,84,100,101,102,103,104,105,120,135,134,133,132,131,130,144,159,174,189,204,219,218,203,188,173,158,143,0];
   List pathForGreen = [92,93,94,95,96,82,67,52,37,22,7,8,9,24,39,54,69,84,100,101,102,103,104,105,120,135,134,133,132,131,130,144,159,174,189,204,219,218,217,202,187,172,157,142,126,125,124,123,122,121,106,107,108,109,110,111,0];
   List pathForYellow = [24,39,54,69,84,100,101,102,103,104,105,120,135,134,133,132,131,130,144,159,174,189,204,219,218,217,202,187,172,157,142,126,125,124,123,122,121,106,91,92,93,94,95,96,82,67,52,37,22,7,8,23,38,53,68,83,0];
   List pathForBlue = [134,133,132,131,130,144,159,174,189,204,219,218,217,202,187,172,157,142,126,125,124,123,122,121,106,91,92,93,94,95,96,82,67,52,37,22,7,8,9,24,39,54,69,84,100,101,102,103,104,105,120,119,118,117,116,115,0];
@@ -311,6 +74,7 @@ class LudoController extends GetxController{
   RxInt steps = 0.obs;
   RxBool diceIsRolling = false.obs;
 
+  /// takes the position on the board and returns the color of the box for the design
   Color getColor(int i) {
     if (lightGreenColorBox.contains(i + 1)) {
       return Colors.greenAccent;
@@ -338,6 +102,8 @@ class LudoController extends GetxController{
     return Colors.white;
   }
 
+  /// get token color with a color string name
+  /// Ex: getTokenColor("green") return Colors.green
   Color getTokenColor(String color) {
     switch (color) {
       case "green":
@@ -347,12 +113,15 @@ class LudoController extends GetxController{
       case "blue":
         return Colors.blue;
       case "yellow":
-        return Colors.yellow;
+        return const Color(0xffe0bc00);
+        // return Colors.yellow;
       default:
         return Colors.white;
     }
   }
 
+
+  /// returns a single token on a position or null if no token is present
   getToken(i) {
     List tokens = checkForTokensAtPosition(i+1);
     if(tokens.isEmpty){
@@ -371,6 +140,7 @@ class LudoController extends GetxController{
     }
   }
 
+  /// rolls the dice and checks for valid moves for current player
   rollDice() async {
       diceIsRolling.value = true;
     await Future.delayed(Duration(seconds: 1), () {
@@ -403,6 +173,7 @@ class LudoController extends GetxController{
       });
   }
 
+  /// checks if all tokens are in base or completed
   checkAllTokenAreInBase(){
     if(currentPlayerTurn == 1 && (allTokens.value[8]['position'] == 168 || allTokens.value[8]['position'] == 0) && (allTokens.value[9]['position'] == 169 || allTokens.value[9]['position'] == 0) && (allTokens.value[10]['position'] == 183 || allTokens.value[10]['position'] == 0) && (allTokens.value[11]['position'] == 184 || allTokens.value[11]['position'] == 0))return true;
     if(currentPlayerTurn == 2 && (allTokens.value[0]['position'] == 33 || allTokens.value[0]['position'] == 0) && (allTokens.value[1]['position'] == 34 || allTokens.value[1]['position'] == 0) && (allTokens.value[2]['position'] == 48 || allTokens.value[2]['position'] == 0) && (allTokens.value[3]['position'] == 49 || allTokens.value[3]['position'] == 0))return true;
@@ -411,12 +182,14 @@ class LudoController extends GetxController{
     return false;
   }
 
+  /// generates a random number between 1 to 6
   int getRandomNumber() {
     Random random = Random();
     int randomNumber = random.nextInt(6);
     return randomNumber + 1;
   }
 
+  /// changes the turn to the next player
   nextTurn(){
     int index = playerTurns.indexOf(currentPlayerTurn.value);
     if(index == playerTurns.length-1){
@@ -426,6 +199,7 @@ class LudoController extends GetxController{
     }
   }
 
+  /// set the completed player in the scoreboard list and remove from the turns
   setPlayerCompetedGame(int player){
     if(firstPlace.value == 0){
       firstPlace.value = player;
@@ -457,6 +231,7 @@ class LudoController extends GetxController{
 
   }
 
+  /// gets an integer and return the color string (ex: "green") of the current player
   getPlayerColor({int? player}){
     switch(player ?? currentPlayerTurn.value){
       case 1:
@@ -470,6 +245,8 @@ class LudoController extends GetxController{
     }
   }
 
+
+  /// moves the token while checking the token color
   moveToken({
     required Map<String, Object> token,
   }) {
@@ -494,6 +271,7 @@ class LudoController extends GetxController{
     }
   }
 
+  /// moves the token based on the color
   moveTokenBasedOnColor({required token, required List colorTokenBase, required List pathForColor }){
     if (colorTokenBase.contains(token['position'])) {
       if (steps.value == 6) {
@@ -508,7 +286,7 @@ class LudoController extends GetxController{
 
         if(!safePositions.contains(pathForColor[newPositionIndex])){
           List itemsAtPosition = checkForTokensAtPosition(pathForColor[newPositionIndex]);
-          debugPrint("itemsAtPosition : ${itemsAtPosition}");
+          debugPrint("itemsAtPosition : $itemsAtPosition");
           if(itemsAtPosition.isNotEmpty){
             if(itemsAtPosition.length > 1){
               setTokenPosition(token: token, newPosition: pathForColor[newPositionIndex]);
@@ -538,21 +316,7 @@ class LudoController extends GetxController{
     }
   }
 
-  getPlayerTurnName(){
-    switch(currentPlayerTurn.value){
-      case 1:
-        return "Red";
-      case 2:
-        return "Green";
-      case 3:
-        return "Yellow";
-      case 4:
-        return "Blue";
-      default:
-        break;
-    }
-  }
-
+  /// returns the list of tokens at a particular position
   List checkForTokensAtPosition(int position){
     List tokens = [];
     List getToken = allTokens.where((token) =>token['position'] == position).toList();
@@ -560,16 +324,19 @@ class LudoController extends GetxController{
     return tokens;
   }
 
+  /// accepts oldToken and newToken and replaces newToken with oldToken and resets all token to base position
   killAToken({required oldToken, required newToken}){
     int oldTokenIndex = findTokenIndex(oldToken);
     setTokenPosition(token: newToken, newPosition: allTokens.value[oldTokenIndex]['position']);
     setTokenPosition(token: oldToken, newPosition: allTokens.value[oldTokenIndex]['basePosition']);
   }
 
+  /// accepts token and returns its index in allTokens list
   int findTokenIndex(token){
     return allTokens.indexWhere((t) => t["id"] == token['id']);
   }
 
+  /// accepts token and position and set the token to this position on the board
   setTokenPosition({required token, required newPosition}){
     int index = findTokenIndex(token);
     allTokens.value[index] = {
@@ -583,18 +350,20 @@ class LudoController extends GetxController{
     }
   }
 
+  /// accepts a token, based on the token color checks if the player has completed the game.
   bool checkIfPlayerIsCompleted(token){
     bool completed = true;
-    allTokens.forEach((t){
+    for (var t in allTokens) {
       if(t['color'] == token['color']){
         if(t['position'] != 0){
           completed = false;
         }
       }
-    });
+    }
     return completed;
   }
 
+  /// returns list of path positions of current player
   List getPlayerPath(){
     switch(currentPlayerTurn.value){
       case 1:
@@ -610,23 +379,21 @@ class LudoController extends GetxController{
     }
   }
 
+  /// checks if the move is playable or not for current player
   bool checkIfTheMoveIsPlayable(){
     String currentPlayerColor = getPlayerColor();
     List currentPlayerPath = getPlayerPath();
     int count = 0;
-    debugPrint("currentPlayerColor : ${currentPlayerColor}");
-    debugPrint("currentPlayerPath : ${currentPlayerPath}");
-    debugPrint("currentPlayerPath length : ${currentPlayerPath.length}");
     for(int i = 0; i < allTokens.length; i++){
       if(count == 4) break;
       if(allTokens.value[i]['color'] == currentPlayerColor){
         debugPrint("${allTokens.value[i]}");
         count++;
         int positionIndex = currentPlayerPath.indexOf(allTokens.value[i]['position']);
-        debugPrint("count : ${count}");
+        debugPrint("count : $count");
         // debugPrint("count : ${count}");
-        debugPrint("positionIndex : ${positionIndex}");
-        debugPrint("steps : ${steps}");
+        debugPrint("positionIndex : $positionIndex");
+        debugPrint("steps : $steps");
         // debugPrint("count : ${count}");
         if((steps.value + positionIndex) < currentPlayerPath.length)return true;
       }
@@ -634,7 +401,13 @@ class LudoController extends GetxController{
     return false;
   }
 
-  initState(){
-
+  /// return current Player Color
+  Color getButtomColor(){
+    if(currentPlayerTurn.value == 1)return Colors.red;
+    if(currentPlayerTurn.value == 2)return Colors.green;
+    if(currentPlayerTurn.value == 3)return const Color(0xffe0bc00);
+    // if(currentPlayerTurn.value == 3)return Colors.yellow;
+    if(currentPlayerTurn.value == 4)return Colors.blue;
+    return Colors.black;
   }
 }

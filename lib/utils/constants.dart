@@ -34,3 +34,16 @@ const String mapIAccessToken = "b8f5d20027649c61f502a4a10f93fb1a";
 
  const String colorWh = "whiteColor";
  const String colorBl = "blackColor";
+
+ // --------------------------------flutter animations basics ----------------------->
+ Widget pointItem({required String point})=>Row(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+   const Padding(
+    padding: EdgeInsets.only(top: 8.0),
+    child: Icon(Icons.circle, size: 10,),
+   ),
+   const SizedBox(width: 10,),
+   Expanded(child: Text(point, style: googleFontStyle(),))
+  ],
+ );

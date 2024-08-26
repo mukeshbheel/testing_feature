@@ -1,13 +1,13 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:testing/features/flutter_ludo/ludo_controller/ludo_controller.dart';
-import 'package:testing/features/flutter_ludo/ludo_piece.dart';
 import 'package:testing/utils/common_button.dart';
+import 'package:testing/utils/common_snackbar.dart';
+import 'package:testing/utils/common_widget_classes.dart';
 
+import '../../utils/code_text.dart';
 import '../../utils/constants.dart';
 
 
@@ -25,13 +25,6 @@ class _FlutterLudoState extends State<FlutterLudo> {
   bool showPositions = false;
   bool showDebugMode = false;
 
-  @override
-  initState() {
-    SchedulerBinding.instance.scheduleFrameCallback((timeStamp) {
-      ludoController.initState();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +86,10 @@ class _FlutterLudoState extends State<FlutterLudo> {
                     return  InkWell(
                       onTap: token == null
                           ? null : () {
-                        if (ludoController.steps.value == 0) return;
+                        if (ludoController.steps.value == 0) {
+                          CommonSnackbar.showError(context: context, message: "Please Roll The Dice");
+                          return;
+                        }
                         ludoController.moveToken(
                           token: token,
                         );
@@ -146,12 +142,13 @@ class _FlutterLudoState extends State<FlutterLudo> {
               const SizedBox(height: 10),
 
               Container(
+                width: Get.size.width,
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
-                  color: getButtomColor(ludoController.currentPlayerTurn.value),
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text("${ludoController.getPlayerTurnName()} Player's Turn", style: googleFontStyle(fontSize: 18, color: Colors.white,),),
+                child: Center(child: Text("${ludoController.getPlayerColor().toString().capitalizeFirst} Player's Turn", style: googleFontStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ludoController.getButtomColor(),),)),
               ),
               const SizedBox(height: 10,),
 
@@ -181,7 +178,7 @@ class _FlutterLudoState extends State<FlutterLudo> {
                 width: 100,
                 child: CommonButton.mainButton(
                     text: "Roll Dice",
-                    colorBg: getButtomColor(ludoController.currentPlayerTurn.value),
+                    colorBg: ludoController.getButtomColor(),
                     onTap: () {
                       ludoController.rollDice();
                     }),
@@ -190,11 +187,9 @@ class _FlutterLudoState extends State<FlutterLudo> {
               const SizedBox(
                 height: 20,
               ),
-
-
-
-
               const SizedBox(height: 30,),
+              const CommonShowCode(codeText: CodeText.flutterLudoCode),
+              const SizedBox(height: 40,),
             ],
           ),
         ),
@@ -213,9 +208,12 @@ class _FlutterLudoState extends State<FlutterLudo> {
                     },
                     colorBg: Colors.black
                 ),
+
+
+                // for changing the token position manually on the board for testing
                 if(showDebugMode)
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -291,7 +289,7 @@ class _FlutterLudoState extends State<FlutterLudo> {
                                   decoration: const BoxDecoration(
                                       color: Colors.black
                                   ),
-                                  child: Text(selectedPosition != 0 ? "${selectedPosition}"  :'select position', style: googleFontStyle(color: Colors.white),),
+                                  child: Text(selectedPosition != 0 ? "$selectedPosition"  :'select position', style: googleFontStyle(color: Colors.white),),
                                 ),
                                 // initialValue: selectedItem,
                                 onSelected: (item) {
@@ -328,12 +326,4 @@ class _FlutterLudoState extends State<FlutterLudo> {
       ),
     );
   }
-}
-
-Color getButtomColor(int i){
-  if(i == 1)return Colors.red;
-  if(i == 2)return Colors.green;
-  if(i == 3)return Colors.yellow;
-  if(i == 4)return Colors.blue;
-  return Colors.black;
 }

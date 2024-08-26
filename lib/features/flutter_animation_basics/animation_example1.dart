@@ -8,17 +8,17 @@ import 'package:testing/utils/code_text.dart';
 import 'package:testing/utils/common_button.dart';
 import 'package:testing/utils/common_snackbar.dart';
 
-import '../utils/common_widget_classes.dart';
-import '../utils/constants.dart';
+import '../../utils/common_widget_classes.dart';
+import '../../utils/constants.dart';
 
-class FlutterAnimationBasics extends StatefulWidget {
-  const FlutterAnimationBasics({super.key});
+class AnimationExample1 extends StatefulWidget {
+  const AnimationExample1({super.key});
 
   @override
-  State<FlutterAnimationBasics> createState() => _FlutterAnimationBasicsState();
+  State<AnimationExample1> createState() => _AnimationExample1State();
 }
 
-class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with SingleTickerProviderStateMixin {
+class _AnimationExample1State extends State<AnimationExample1> with SingleTickerProviderStateMixin {
 
   late AnimationController _controllerRotateAxis;
   late Animation _animationRotateAxis;
@@ -26,8 +26,8 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
   @override
   void initState() {
     _controllerRotateAxis = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2)
+        vsync: this,
+        duration: const Duration(seconds: 2)
     );
 
     _animationRotateAxis = Tween<double>(begin: 0.0, end: 2 * pi).animate(_controllerRotateAxis);
@@ -51,7 +51,7 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
     "AnimatedBuilder listens for value change in animation and calling the builder again to show the changes of the animation controller and animation."
   ];
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +59,7 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          'Flutter Animation Basics',
+          'Example 1',
           style: googleFontStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -76,10 +76,10 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
               width: MediaQuery.of(context).size.width,
               height: 400,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(10)
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10)
               ),
-              child: Center( 
+              child: Center(
                 child: AnimatedBuilder(
                   animation: _controllerRotateAxis,
                   builder: (context, child){
@@ -94,10 +94,10 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
                             color: Colors.blue,
                             boxShadow: const [
                               BoxShadow(
-                                color: Colors.black87,
-                                blurRadius: 7,
-                                spreadRadius: 6,
-                                offset: Offset(2,2)
+                                  color: Colors.black87,
+                                  blurRadius: 7,
+                                  spreadRadius: 6,
+                                  offset: Offset(2,2)
                               )
                             ]
                         ),
@@ -107,21 +107,12 @@ class _FlutterAnimationBasicsState extends State<FlutterAnimationBasics> with Si
                 ),
               ),
             ),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
           ],
         ),
       ),
     );
   }
 }
-
-Widget pointItem({required String point})=>Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    const Padding(
-      padding: EdgeInsets.only(top: 8.0),
-      child: Icon(Icons.circle, size: 10,),
-    ),
-    const SizedBox(width: 10,),
-    Expanded(child: Text(point, style: googleFontStyle(),))
-  ],
-);
