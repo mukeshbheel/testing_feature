@@ -13,8 +13,12 @@ const String mapIAccessToken = "b8f5d20027649c61f502a4a10f93fb1a";
 
  //---------------------------ludo constants----------------------------------------------->
 
- getRandomColor()=>Colors.primaries[Random().nextInt(Colors.primaries.length)];
-
+ // getRandomColor()=>Colors.primaries[Random().nextInt(Colors.primaries.length)];
+ Color getRandomColor(){
+   return Color(
+       0xFF000000 + Random().nextInt(0x00FFFFFF)
+   );
+ }
 
  const String color00 = "firstColorLight";
  const String color01 = "firstColor";

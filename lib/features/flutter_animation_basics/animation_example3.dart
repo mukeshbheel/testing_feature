@@ -95,39 +95,39 @@ class _AnimationExample3State extends State<AnimationExample3> with TickerProvid
                           Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.identity()..translate(Vector3(0.0, 0.0, -100.0)),
-                            child: container(),
+                            child: container(6),
                           ),
 
                           //left
                           Transform(
                             alignment: Alignment.centerLeft,
                             transform: Matrix4.identity()..rotateY(pi/2),
-                            child: container(),
+                            child: container(5),
                           ),
 
                           //right
                           Transform(
                             alignment: Alignment.centerRight,
                             transform: Matrix4.identity()..rotateY(-pi/2),
-                            child: container(),
+                            child: container(4),
                           ),
 
                           //top
                           Transform(
                             alignment: Alignment.topCenter,
                             transform: Matrix4.identity()..rotateX(-pi/2),
-                            child: container(),
+                            child: container(3),
                           ),
 
                           //bottom
                           Transform(
                             alignment: Alignment.bottomCenter,
                             transform: Matrix4.identity()..rotateX(pi/2),
-                            child: container(),
+                            child: container(2),
                           ),
                           
                           //front
-                          container(),
+                          container(1),
                         ],
                       ),
                     );
@@ -146,9 +146,10 @@ class _AnimationExample3State extends State<AnimationExample3> with TickerProvid
 }
 
 
-Container container()=>Container(
+Container container(int diceNumber)=>Container(
   decoration: BoxDecoration(
-      border: Border.all(color: Colors.red, width: 2)
+      border: Border.all(color: Colors.red, width: 2),
+    // image: DecorationImage(image: AssetImage("assets/dice_${diceNumber}.png")),
   ),
   width: 100,
   height: 100,

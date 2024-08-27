@@ -6,6 +6,8 @@ import 'package:testing/features/flutter_animation_basics/animation_example2.dar
 import 'package:testing/features/flutter_animation_basics/animation_example3.dart';
 import 'package:testing/utils/constants.dart';
 
+import 'animation_example4.dart';
+
 class FlutterAnimationBasics extends StatelessWidget {
   FlutterAnimationBasics({super.key});
 
@@ -21,6 +23,10 @@ class FlutterAnimationBasics extends StatelessWidget {
     {
       'title': 'Example 3',
       'screen': const AnimationExample3()
+    },
+    {
+      'title': 'Example 4',
+      'screen': const AnimationExample4()
     },
   ];
 
