@@ -12,11 +12,17 @@ class FlutterAnimationBasics extends StatelessWidget {
   FlutterAnimationBasics({super.key});
 
   List featureAnimations = [
-    {'title': 'Example 1', 'screen': const AnimationExample1()},
-    {'title': 'Example 2', 'screen': const AnimationExample2()},
-    {'title': 'Example 3', 'screen': const AnimationExample3()},
-    {'title': 'Example 4', 'screen': const AnimationExample4()},
-    {'title': 'Example 5', 'screen': const AnimationExample5()},
+    {'title': 'tween & rotation', 'screen': const AnimationExample1()},
+    {'title': 'Rotate & Flip', 'screen': const AnimationExample2()},
+    {'title': '3D Rotating Cube', 'screen': const AnimationExample3()},
+    {
+      'title': 'Custom Clipper & Tween AnimationBuilder',
+      'screen': const AnimationExample4()
+    },
+    {
+      'title': 'Polygon with increasing sides',
+      'screen': const AnimationExample5()
+    },
   ];
 
   @override

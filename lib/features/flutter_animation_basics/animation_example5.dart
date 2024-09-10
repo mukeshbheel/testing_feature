@@ -16,7 +16,6 @@ class AnimationExample5 extends StatefulWidget {
 class _AnimationExample5State extends State<AnimationExample5>
     with TickerProviderStateMixin {
   List points = ["Custom painter to draw hexagonal with incresing sides."];
-  Color _color = getRandomColor();
   late AnimationController _sidesAnimationController;
   late Animation _sidesAnimation;
 
@@ -32,7 +31,7 @@ class _AnimationExample5State extends State<AnimationExample5>
 
     _sidesAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     _sidesAnimation = IntTween(
@@ -42,7 +41,7 @@ class _AnimationExample5State extends State<AnimationExample5>
 
     _radiusController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     _radiusAnimation = Tween(
@@ -56,7 +55,7 @@ class _AnimationExample5State extends State<AnimationExample5>
 
     _rotationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     _rotationAnimation = Tween(
@@ -152,7 +151,7 @@ class _AnimationExample5State extends State<AnimationExample5>
               height: 30,
             ),
             const CommonShowCode(
-              codeText: CodeText.flutterAnimationExample4,
+              codeText: CodeText.flutterAnimationExample5,
             ),
             const SizedBox(
               height: 30,

@@ -1,4 +1,4 @@
-class CodeText{
+class CodeText {
   static const String accordianCode = '''
   import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
@@ -2807,4 +2807,744 @@ class CircleClipper extends CustomClipper<Path>{
 }
 
   ''';
+
+  static const String flutterAnimationExample5 = '''
+import 'dart:math' show pi, cos, sin;
+
+import 'package:flutter/material.dart';
+import 'package:testing/utils/code_text.dart';
+
+import '../../utils/common_widget_classes.dart';
+import '../../utils/constants.dart';
+
+class AnimationExample5 extends StatefulWidget {
+  const AnimationExample5({super.key});
+
+  @override
+  State<AnimationExample5> createState() => _AnimationExample5State();
+}
+
+class _AnimationExample5State extends State<AnimationExample5>
+    with TickerProviderStateMixin {
+  List points = ["Custom painter to draw hexagonal with incresing sides."];
+  late AnimationController _sidesAnimationController;
+  late Animation _sidesAnimation;
+
+  late AnimationController _radiusController;
+  late Animation _radiusAnimation;
+
+  late AnimationController _rotationController;
+  late Animation _rotationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _sidesAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    _sidesAnimation = IntTween(
+      begin: 3,
+      end: 10,
+    ).animate(_sidesAnimationController);
+
+    _radiusController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    _radiusAnimation = Tween(
+      begin: 20.0,
+      end: 200.0,
+    )
+        .chain(
+          CurveTween(curve: Curves.bounceInOut),
+        )
+        .animate(_radiusController);
+
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    _rotationAnimation = Tween(
+      begin: 0.0,
+      end: 2 * pi,
+    )
+        .chain(
+          CurveTween(curve: Curves.easeInOut),
+        )
+        .animate(_rotationController);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sidesAnimationController.repeat(reverse: true);
+    _radiusController.repeat(reverse: true);
+    _rotationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _sidesAnimationController.dispose();
+    _radiusController.dispose();
+    _rotationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Example 5',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, i) => pointItem(point: points[i]),
+              separatorBuilder: (context, i) => const SizedBox(
+                height: 10,
+              ),
+              itemCount: points.length,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: AnimatedBuilder(
+                  animation: Listenable.merge([
+                    _sidesAnimationController,
+                    _radiusController,
+                    _rotationController
+                  ]),
+                  builder: (context, child) {
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..rotateX(_rotationAnimation.value)
+                        ..rotateY(_rotationAnimation.value)
+                        ..rotateZ(_rotationAnimation.value),
+                      child: CustomPaint(
+                        painter: Polygon(sides: _sidesAnimation.value),
+                        child: SizedBox(
+                          width: _radiusAnimation.value,
+                          height: _radiusAnimation.value,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const CommonShowCode(
+              codeText: CodeText.flutterAnimationExample4,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Polygon extends CustomPainter {
+  final int sides;
+
+  Polygon({
+    super.repaint,
+    required this.sides,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 3;
+
+    final path = Path();
+
+    Offset center = Offset(size.width / 2, size.height / 2);
+    double radius = size.width / 2;
+    double angle = (2 * pi) / sides;
+    List angles = List.generate(sides, (i) => i * angle);
+
+    path.moveTo(
+      center.dx + radius * cos(0),
+      center.dy + radius * sin(0),
+    );
+
+    for (angle in angles) {
+      path.lineTo(
+        center.dx + radius * cos(angle),
+        center.dy + radius * sin(angle),
+      );
+    }
+
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
+      oldDelegate is Polygon && oldDelegate.sides != sides;
+}
+
+''';
+
+  static const String spinnerCode = '''
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:testing/utils/code_text.dart';
+import 'package:testing/utils/common_button.dart';
+
+import '../../utils/common_widget_classes.dart';
+import '../../utils/constants.dart';
+
+class CustomSpinner extends StatefulWidget {
+  const CustomSpinner({super.key});
+
+  @override
+  State<CustomSpinner> createState() => _CustomSpinnerState();
+}
+
+class _CustomSpinnerState extends State<CustomSpinner>
+    with TickerProviderStateMixin {
+  List points = [
+    "create single custom painter sending values in it.",
+    "canvas.drawarc and text painter for creating arcs using for loop."
+  ];
+  List<Color> colors = [];
+  int numberOfSections = 10;
+  double numberOfRotations = 10;
+  double selectedAngle = 2 * pi;
+  int selectedValue = 0;
+  int currency = 0;
+  List values = [5, 20, 1, 87, 55, 12, 98, 43, 89, 12];
+
+  late AnimationController _rotateAlongZAxisAnimationController;
+  late Animation _rotateAlongZAxisAnimation;
+
+  @override
+  void initState() {
+    for (int i = 0; i < values.length; i++) {
+      colors.add(getRandomColor());
+    }
+    _rotateAlongZAxisAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    _rotateAlongZAxisAnimation = Tween<double>(begin: 0, end: 2 * pi).animate(
+        CurvedAnimation(
+            parent: _rotateAlongZAxisAnimationController,
+            curve: Curves.easeInOut));
+
+    _rotateAlongZAxisAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          currency += selectedValue;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  rotateWheel() {
+    double randomAngle = 2 * pi * Random().nextDouble();
+
+    double angleDifference = 2 * pi / numberOfSections;
+    double startAngle = 0.0;
+    for (int i = 0; i < numberOfSections; i++) {
+      if (startAngle <= randomAngle &&
+          randomAngle <= (startAngle + angleDifference)) {
+        setState(() {
+          selectedValue = values[numberOfSections - i - 1];
+        });
+        randomAngle = startAngle + (angleDifference / 2);
+        break;
+      } else {
+        startAngle += angleDifference;
+      }
+    }
+    _rotateAlongZAxisAnimation =
+        Tween<double>(begin: 0, end: numberOfRotations * 2 * pi + randomAngle)
+            .animate(CurvedAnimation(
+                parent: _rotateAlongZAxisAnimationController,
+                curve: Curves.easeInOutCubicEmphasized));
+    _rotateAlongZAxisAnimationController.reset();
+    _rotateAlongZAxisAnimationController.forward();
+    setState(() {
+      selectedAngle = randomAngle;
+    });
+  }
+
+  @override
+  void dispose() {
+    _rotateAlongZAxisAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Spinner',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Icon(
+                          Icons.currency_rupee_outlined,
+                          color: Colors.yellow,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "\$currency",
+                          style: googleFontStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Transform.rotate(
+                      angle: -pi / 2,
+                      child: Stack(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AnimatedBuilder(
+                                animation: _rotateAlongZAxisAnimationController,
+                                builder: (context, child) {
+                                  return Transform(
+                                    alignment: Alignment.center,
+                                    transform: Matrix4.identity()
+                                      ..rotateZ(
+                                          _rotateAlongZAxisAnimation.value),
+                                    child: CustomPaint(
+                                      painter: CirclePart(
+                                        colors: colors,
+                                        values: values,
+                                      ),
+                                      child: const SizedBox(
+                                        width: 200,
+                                        height: 200,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            top: 0,
+                            right: 0,
+                            child: Transform.flip(
+                              flipX: true,
+                              child: const Icon(
+                                Icons.play_arrow,
+                                color: Color.fromARGB(255, 232, 183, 183),
+                                size: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: CommonButton.mainButton(
+                          text: "Spin The Wheel",
+                          onTap: () {
+                            rotateWheel();
+                          }),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const CommonShowCode(
+              codeText: CodeText.spinnerCode,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CirclePart extends CustomPainter {
+  List<Color> colors;
+  // int sections;
+  List values;
+
+  CirclePart({
+    required this.colors,
+    // required this.sections,
+    required this.values,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // final sections = 10;
+
+    double theta = 2 * pi / values.length;
+
+    // final path = Path();
+    double radius = size.width / 2;
+    Offset center = Offset(radius, radius);
+
+    double startAngle = 0.0;
+    double endAngle = theta;
+    // Color color = getRandomColor();
+    for (int i = 1; i <= values.length; i++) {
+      debugPrint("state angle : \$startAngle");
+      debugPrint("end angle : \$endAngle");
+      Paint paint = Paint()
+        ..color = colors[i - 1]
+        // ..color = Colors.primaries[Random().nextInt(Colors.primaries.length)]
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.fill
+        ..strokeWidth = 1;
+
+      canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
+          startAngle, theta, true, paint);
+
+//----------------------- drawing text ---------------------------------------->
+      const textStyle = TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+      );
+      TextSpan textSpan = TextSpan(
+        text: '\${values[i - 1]}',
+        // text: '\${i * 100 / sections}',
+        style: textStyle,
+      );
+      final textPainter = TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout(
+        minWidth: 0,
+        maxWidth: size.width,
+      );
+      final xCenter = (size.width) / 2;
+      final yCenter = (size.height) / 2;
+
+      final delta = Offset(xCenter - textPainter.size.width / 2,
+          yCenter - textPainter.size.height / 2);
+
+      // Rotate the text about textCentrePoint
+      canvas.save();
+      canvas.translate(xCenter + (radius / 1.5) * cos(startAngle + (theta / 2)),
+          yCenter + ((radius / 1.5) * (sin(startAngle + (theta / 2)))));
+      canvas.rotate(-(3 * pi / 2));
+      // canvas.rotate(theta * (i + 1));
+      canvas.translate(-xCenter, -yCenter);
+      textPainter.paint(canvas, delta);
+      canvas.restore();
+      startAngle += theta;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+
+''';
+
+  static const String customClockCode = '''
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'dart:math' show min, pi, cos, sin;
+import '../utils/code_text.dart';
+import '../utils/common_widget_classes.dart';
+import '../utils/constants.dart';
+
+class CustomClock extends StatelessWidget {
+  CustomClock({super.key});
+  List points = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Custom Clock',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10)),
+              child: const Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [CustomClockWidget(size: Size(200, 200))],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const CommonShowCode(
+              codeText: CodeText.spinnerCode,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomClockWidget extends StatefulWidget {
+  const CustomClockWidget({super.key, required this.size});
+  final Size size;
+
+  @override
+  State<CustomClockWidget> createState() => _CustomClockWidgetState();
+}
+
+class _CustomClockWidgetState extends State<CustomClockWidget> {
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: -pi / 2,
+      child: CustomPaint(
+        painter: ClockPainter(),
+        child: const SizedBox(
+          height: 200,
+          width: 200,
+        ),
+      ),
+    );
+  }
+}
+
+class ClockPainter extends CustomPainter {
+  final DateTime dateTime = DateTime.now();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centerX = size.width / 2;
+    final centerY = size.width / 2;
+    Offset center = Offset(centerX, centerY);
+    final radius = min(size.width, size.height) / 2;
+
+    Paint innerCirclePaint = Paint()..color = const Color(0xff3E406A);
+    Paint circleRingPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = radius * 0.07;
+    Paint circleCenterPaint = Paint()..color = Colors.white;
+
+//-----------------minute------------------------------------>
+    Color minColor1 = const Color(0xffD46CC0);
+    Color minColor2 = const Color(0xffF8E1FF);
+    double minLength = radius * 0.4;
+    double secLength = radius * 0.5;
+    double hrLength = radius * 0.3;
+    Paint minPaint = Paint()
+      ..shader = RadialGradient(colors: [minColor1, minColor2])
+          .createShader(Rect.fromCircle(center: center, radius: radius))
+      ..strokeWidth = radius * 0.05
+      ..strokeCap = StrokeCap.round;
+
+    final minOffsetX =
+        centerX + minLength * cos((dateTime.minute * 6) * pi / 180);
+    final minOffsetY =
+        centerY + minLength * sin((dateTime.minute * 6) * pi / 180);
+    Offset minOffset = Offset(minOffsetX, minOffsetY);
+
+    //-----------------sec------------------------------------>
+    Color secColor1 = const Color(0xfff2b009);
+    Color secColor2 = const Color.fromARGB(255, 244, 239, 235);
+    Paint secPaint = Paint()
+      ..shader = RadialGradient(colors: [secColor1, secColor2])
+          .createShader(Rect.fromCircle(center: center, radius: radius))
+      ..strokeWidth = radius * 0.03
+      ..strokeCap = StrokeCap.round;
+
+    final secOffsetX =
+        centerX + secLength * cos((dateTime.second * 6) * pi / 180);
+    final secOffsetY =
+        centerY + secLength * sin((dateTime.second * 6) * pi / 180);
+    Offset secOffset = Offset(secOffsetX, secOffsetY);
+
+    //-----------------hr------------------------------------>
+    Color hrColor1 = const Color.fromARGB(255, 64, 134, 247);
+    Color hrColor2 = const Color.fromARGB(255, 1, 34, 125);
+    Paint hrPaint = Paint()
+      ..shader = RadialGradient(colors: [hrColor1, hrColor2])
+          .createShader(Rect.fromCircle(center: center, radius: radius))
+      ..strokeWidth = radius * 0.05
+      ..strokeCap = StrokeCap.round;
+
+    final hrOffsetX = centerX +
+        hrLength * cos((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
+    final hrOffsetY = centerY +
+        hrLength * sin((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
+    Offset hrOffset = Offset(hrOffsetX, hrOffsetY);
+
+    //------------------outer dashes------------------------->
+    double outerCircleDashRadius = radius;
+    double innerCircleDashRadius = radius * 0.95;
+    Color dashColor1 = const Color.fromARGB(255, 232, 233, 235);
+    Color dashColor2 = const Color.fromARGB(255, 119, 120, 124);
+    Paint dashPaint = Paint()
+      ..shader = RadialGradient(colors: [dashColor1, dashColor2])
+          .createShader(Rect.fromCircle(center: center, radius: radius))
+      ..strokeWidth = radius * 0.02
+      ..strokeCap = StrokeCap.round;
+    for (int i = 0; i < 360; i += 6) {
+      bool isHr = i % 30 == 0;
+      Offset outerDashOffset = Offset(
+        centerX + outerCircleDashRadius * cos(i * pi / 180),
+        centerY + outerCircleDashRadius * sin(i * pi / 180),
+      );
+      Offset innerDashOffset = Offset(
+        centerX +
+            (isHr ? radius * 0.92 : innerCircleDashRadius) * cos(i * pi / 180),
+        centerY +
+            (isHr ? radius * 0.92 : innerCircleDashRadius) * sin(i * pi / 180),
+      );
+      canvas.drawLine(outerDashOffset, innerDashOffset, dashPaint);
+    }
+    canvas.drawCircle(center, radius * 0.65, circleRingPaint);
+    canvas.drawCircle(center, radius * 0.65, innerCirclePaint);
+
+    canvas.drawLine(center, secOffset, secPaint);
+    canvas.drawLine(center, minOffset, minPaint);
+    canvas.drawLine(center, hrOffset, hrPaint);
+    canvas.drawCircle(center, radius * 0.09, circleCenterPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+''';
 }

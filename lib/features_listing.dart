@@ -14,6 +14,7 @@ import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
 import 'package:testing/utils/constants.dart';
 
+import 'features/custom_clock.dart';
 import 'features/custom_painting_widgets.dart';
 import 'features/method_channel.dart';
 import 'features/multi_threading.dart';
@@ -22,23 +23,78 @@ class FeaturesListings extends StatelessWidget {
   FeaturesListings({super.key});
 
   List features = [
-    {'title': 'Accordian', 'screen': const AccordionPage()},
-    {'title': 'mapple', 'screen': const MapplesFunction()},
-    {'title': 'fl_charts', 'screen': const FlCharts()},
-    {'title': 'oval shadow', 'screen': const OvalShadow()},
+    {
+      'title': 'Accordian',
+      'screen': const AccordionPage(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'mapple',
+      'screen': const MapplesFunction(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'fl_charts',
+      'screen': const FlCharts(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'oval shadow',
+      'screen': const OvalShadow(),
+      'showWidget': false,
+      'component': null
+    },
     {
       'title': 'Custom painting widgets',
-      'screen': const CustomPaintingWidgets()
+      'screen': const CustomPaintingWidgets(),
+      'showWidget': false,
+      'component': null
     },
-    {'title': 'MultiThreading', 'screen': const MultiThreadingExample()},
-    {'title': 'Method Channel', 'screen': const MethodChannelExample()},
+    {
+      'title': 'MultiThreading',
+      'screen': const MultiThreadingExample(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'Method Channel',
+      'screen': const MethodChannelExample(),
+      'showWidget': false,
+      'component': null
+    },
     {
       'title': 'Clip Path custom Container',
-      'screen': const ClippathCustomContainerShape()
+      'screen': const ClippathCustomContainerShape(),
+      'showWidget': false,
+      'component': null
     },
-    {'title': 'Flutter Animation Basics', 'screen': FlutterAnimationBasics()},
-    {'title': 'Flutter Ludo', 'screen': FlutterLudo()},
-    {'title': 'Spinner', 'screen': CustomSpinner()},
+    {
+      'title': 'Flutter Animation Basics',
+      'screen': FlutterAnimationBasics(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'Flutter Ludo',
+      'screen': FlutterLudo(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'Spinner',
+      'screen': CustomSpinner(),
+      'showWidget': false,
+      'component': null
+    },
+    {
+      'title': 'Custom Clock',
+      'screen': CustomClock(),
+      'showWidget': true,
+      'component': CustomClockWidget
+    },
   ];
 
   @override
@@ -76,12 +132,26 @@ class FeaturesListings extends StatelessWidget {
                             color: getRandomColor(),
                           ),
                           child: Center(
-                            child: Text(
-                              item['title'].toString().capitalizeFirst!,
-                              style: googleFontStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  item['title'].toString().capitalizeFirst!,
+                                  style: googleFontStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                if (item['title'].toString().toLowerCase() ==
+                                    "custom clock")
+                                  SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: CustomClockWidget(
+                                      size: MediaQuery.of(context).size,
+                                    ),
+                                  )
+                              ],
                             ),
                           ),
                         ),
