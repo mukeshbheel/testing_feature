@@ -3547,4 +3547,762 @@ class ClockPainter extends CustomPainter {
 }
 
 ''';
+
+  static const String factoryMethodDPCode = '''
+  //-------------Platform_button.dart-------------->
+  import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+abstract class PlatformButton {
+  Widget build(VoidCallback onPressed, Widget child);
+
+  factory PlatformButton(TargetPlatform platform){
+    switch(platform){
+      case TargetPlatform.android:
+        return AndroidButton();
+
+      case TargetPlatform.iOS:
+        return IosButton();
+
+      default:
+        return AndroidButton();
+    }
+  }
+}
+
+class AndroidButton implements PlatformButton{
+  @override
+  Widget build(VoidCallback onPressed, Widget child) {
+    return ElevatedButton(onPressed: onPressed, child: child);
+  }
+}
+
+class IosButton implements PlatformButton{
+  @override
+  Widget build(VoidCallback onPressed, Widget child) {
+    return CupertinoButton(child: child, onPressed: onPressed);
+  }
+}
+
+//----------------------factory_method_DP.dart-------------------->
+
+import 'package:flutter/material.dart';
+import 'package:testing/features/flutter_design_patterns/factory_method_DP/platform_button.dart';
+import 'package:testing/utils/code_text.dart';
+import '../../../utils/common_widget_classes.dart';
+import '../../../utils/constants.dart';
+
+class FactoryMethodDp extends StatelessWidget {
+  FactoryMethodDp({super.key});
+
+  List points = [
+    "Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to sub­classes.",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Factory Method',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>pointItem(point: points[i]), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: points.length),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Android Button", style: googleFontStyle(color: Colors.white),),
+                        const SizedBox(width: 10,),
+                        PlatformButton(TargetPlatform.android).build((){}, const Text("Click")),
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("IOS Button", style: googleFontStyle(color: Colors.white),),
+                        const SizedBox(width: 10,),
+                        PlatformButton(TargetPlatform.iOS).build((){}, const Text("Click")),
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Current Platform Button", style: googleFontStyle(color: Colors.white),),
+                        const SizedBox(width: 10,),
+                        PlatformButton(Theme.of(context).platform).build((){}, const Text("Click")),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+  ''';
+
+  static const String abstractFactoryDPCode = '''
+  //-----------------platform_button.dart------------------------>
+  
+  import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+abstract class PlatformButton {
+  Widget build(VoidCallback onPressed, Widget child);
+
+  factory PlatformButton(TargetPlatform platform){
+    switch(platform){
+      case TargetPlatform.android:
+        return AndroidButton();
+
+      case TargetPlatform.iOS:
+        return IosButton();
+
+      default:
+        return AndroidButton();
+    }
+  }
+}
+
+class AndroidButton implements PlatformButton{
+  @override
+  Widget build(VoidCallback onPressed, Widget child) {
+    return ElevatedButton(onPressed: onPressed, child: child);
+  }
+}
+
+class IosButton implements PlatformButton{
+  @override
+  Widget build(VoidCallback onPressed, Widget child) {
+    return CupertinoButton(child: child, onPressed: onPressed);
+  }
+}
+
+//----------------------------platform_loader.dart----------------------->
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+abstract interface class PlatformLoader{
+  Widget build();
+
+  factory PlatformLoader(TargetPlatform platform){
+    switch(platform){
+      case TargetPlatform.android:
+        return AndroidLoader();
+      case TargetPlatform.iOS:
+        return IOSLoader();
+      default:
+        return IOSLoader();
+    }
+  }
+}
+
+class AndroidLoader implements PlatformLoader{
+  @override
+  Widget build() {
+    return CircularProgressIndicator();
+  }
+}
+
+class IOSLoader implements PlatformLoader{
+  @override
+  Widget build() {
+    return CupertinoActivityIndicator();
+  }
+}
+
+//-----------------------------abstruct_factory_DP.dart------------------------->
+
+import 'package:flutter/material.dart';
+import 'package:testing/features/flutter_design_patterns/factory_method_DP/platform_loader.dart';
+
+import '../factory_method_DP/platform_button.dart';
+
+
+abstract interface class AbstructFactoryDPPlatform {
+  Widget buildButton(BuildContext context, VoidCallback onPressed, Widget child);
+  Widget buildLoader(BuildContext context);
+}
+
+class AbstructFactoryDpPlatformImpl implements AbstructFactoryDPPlatform{
+  @override
+  Widget buildButton(BuildContext context, VoidCallback onPressed, Widget child) {
+    return PlatformButton(Theme.of(context).platform).build(onPressed, child);
+  }
+
+  @override
+  Widget buildLoader(BuildContext context) {
+    return PlatformLoader(Theme.of(context).platform).build();
+  }
+}
+
+//-----------------------------AbstructFactoryDPExample.dart------------------------->
+
+
+import 'package:flutter/material.dart';
+import 'package:testing/features/flutter_design_patterns/abstruct_factory_DP/abstruct_factory_DP.dart';
+import 'package:testing/features/flutter_design_patterns/factory_method_DP/platform_button.dart';
+import 'package:testing/utils/code_text.dart';
+import '../../../utils/common_widget_classes.dart';
+import '../../../utils/constants.dart';
+
+class Abstructfactorydpexample extends StatelessWidget {
+  Abstructfactorydpexample({super.key});
+
+  List points = [
+    "Provide an interface for creating families of related or dependent objects without specifying their concrete classes.",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Abstract Factory',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>pointItem(point: points[i]), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: points.length),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Current Platform Button", style: googleFontStyle(),),
+                            const SizedBox(width: 10,),
+                            PlatformButton(Theme.of(context).platform).build((){}, const Text("Click")),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Current Platform Loader", style: googleFontStyle(),),
+                            const SizedBox(width: 10,),
+                            AbstructFactoryDpPlatformImpl().buildLoader(context),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+  ''';
+
+  static const String singletonDPCode = '''
+  //--------------------------singleton_DP.dart----------------------------->
+  
+  class EmployeeSingleton{
+  String? name;
+
+  static EmployeeSingleton? _instance;
+
+  // private constructor
+  EmployeeSingleton._privateConstructor(this.name);
+
+  // create default instance
+  static final EmployeeSingleton _defaultInstance = EmployeeSingleton._privateConstructor('Chintu');
+
+  // method 1
+  // static EmployeeSingleton getInstance(){
+  //   _instance ??= _defaultInstance;
+  //   return _instance!;
+  // }
+
+  // method 2
+  // static EmployeeSingleton get instance {
+  //   _instance ??= _defaultInstance;
+  //   return _instance!;
+  // }
+
+  // method 3
+  factory EmployeeSingleton(){
+      _instance ??= _defaultInstance;
+      return _instance!;
+  }
+
+
+}
+
+//----------------------------------single_DP_example.dart--------------------->
+
+
+import 'package:flutter/material.dart';
+import 'package:testing/features/flutter_design_patterns/singleton_DP/singleton_DP.dart';
+import 'package:testing/utils/code_text.dart';
+import '../../../utils/common_widget_classes.dart';
+import '../../../utils/constants.dart';
+
+class SingleDpExample extends StatefulWidget {
+  SingleDpExample({super.key});
+
+  @override
+  State<SingleDpExample> createState() => _SingleDpExampleState();
+}
+
+class _SingleDpExampleState extends State<SingleDpExample> {
+  List points = [
+    "Singleton is a creational design pattern that ensures that a class has only one instance and also provides a global point of access to it.",
+  ];
+
+  late EmployeeSingleton employee1 = EmployeeSingleton();
+
+  late EmployeeSingleton employee2 = EmployeeSingleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Singleton',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>pointItem(point: points[i]), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: points.length),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Row(
+                  children: [
+                    Expanded(child: component1(employee1, (){
+                      setState(() {});
+                    })),
+                    const SizedBox(height: 20,),
+                    Expanded(child: component1(employee2,(){
+                    setState(() {});
+                    })),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget component1(EmployeeSingleton employee, VoidCallback onPressed){
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.black, width: 3)
+    ),
+    child: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Employee name : \${employee.name}", style: googleFontStyle(),),
+          const SizedBox(height: 20,),
+          ElevatedButton(onPressed: (){
+            if(employee.name == "Chintu"){
+              employee.name = "Pintu";
+            }else{
+              employee.name = "Chintu";
+            }
+            onPressed();
+          }, child: const Text('Change Name'))
+        ],
+      ),
+    ),
+  );
+}
+
+  ''';
+
+  static const String prototypeDPCode = '''
+  //--------------------prototype_DP.dart---------------------->
+  
+  class Person {
+  String name;
+  int age;
+  String country;
+
+  Person({
+    required this.name,
+    required this.age,
+    required this.country,
+  });
+
+  Person copyWith({
+    String? name,
+    int? age,
+    String? country,
+}){
+    return Person(name: name ?? this.name, age: age ?? this.age, country: country ?? this.country);
+  }
+
+  Person clone(){
+    return copyWith(name: name, age : age, country: country);
+  }
+
+  void setter({
+    String? name,
+    int? age,
+    String? country,
+  }){
+    this.name = name ?? this.name;
+    this.age = age ?? this.age;
+    this.country = country ?? this.country;
+  }
+}
+
+//-----------------------------------prototype_DP_example.dart-------------------->
+
+
+import 'package:flutter/material.dart';
+import 'package:testing/features/flutter_design_patterns/prototype_%20DP/prototype_DP.dart';
+import 'package:testing/utils/code_text.dart';
+import '../../../utils/common_widget_classes.dart';
+import '../../../utils/constants.dart';
+
+class PrototypeDpExample extends StatefulWidget {
+  PrototypeDpExample({super.key});
+
+  @override
+  State<PrototypeDpExample> createState() => _PrototypeDpExampleState();
+}
+
+class _PrototypeDpExampleState extends State<PrototypeDpExample> {
+  List points = [
+    "Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.",
+  ];
+
+  Person personPrototype = Person(name: "Test Name", age: 10, country: "India");
+  List<Person> persons = [];
+
+  addNewPerson(){
+    Person newPerson = personPrototype.clone();
+    setState(() {
+      persons.add(newPerson);
+    });
+  }
+
+  refresh(){
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Singleton',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>pointItem(point: points[i]), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: points.length),
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>personComponent(persons[i], context, refresh), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: persons.length),
+            const SizedBox(height: 30,),
+            ElevatedButton(onPressed: (){
+              addNewPerson();
+            }, child: const Text('Add New Person')),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget personComponent(Person person, BuildContext context, VoidCallback refresh){
+  return ListTile(
+    leading: const Icon(Icons.person, color: Colors.blue,),
+    title: Text(person.name, style: googleFontStyle(),),
+    subtitle: Text("\${person.age} - \${person.country}"),
+    trailing: IconButton(icon: const Icon(Icons.edit), onPressed: (){
+      showDialog(context: context, builder: (_){
+        final nameField = TextEditingController();
+        return AlertDialog(
+          title: Text("Change Name", style: googleFontStyle(),),
+          content: Column(
+            children: [
+              TextFormField(
+                controller: nameField,
+              )
+            ],
+          ),
+          actions: [
+            ElevatedButton(onPressed: (){
+              if(nameField.text.isEmpty){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red,content: Text("Enter Name", style: googleFontStyle(color: Colors.white),),));
+                return;
+              }
+              person.setter(name: nameField.text);
+              Navigator.pop(context);
+              refresh();
+            }, child: Text("OK", style: googleFontStyle(),)),
+            ElevatedButton(onPressed: (){
+              Navigator.pop(context);
+            }, child: Text("Cancel", style: googleFontStyle(),)),
+          ],
+        );
+      });
+    },),
+  );
+}
+
+  ''';
+
+  static const String adapterDPCode = '''
+  //-------------------------------adapter_DP.dart----------------------->
+  
+  import 'dart:convert';
+
+class GetYouTubePost{
+  String getYouTubePosts(){
+    return '
+  [
+  {
+    "title": "What is Flutter",
+    "description": "About flutter"
+  },
+  {
+  "title": "What is Widgets in flutter",
+  "description": "all about widgets"
+}
+]
+';
+  }
+}
+
+class GetInstaPost{
+  String getInstaPost(){
+    return '
+[
+{
+"heading": "What is flutter used for?",
+"subHeading": "flutter uses"
+},
+{
+"heading": "Design pattern in flutter",
+"subHeading": "design patterns"
+}
+]
+';
+  }
+}
+
+abstract class GetPost{
+  List<Post> getPost();
+}
+
+class GetYouTubePostAdapter implements GetPost{
+
+  final GetYouTubePost getYouTubePost = GetYouTubePost();
+
+  @override
+  List<Post> getPost() {
+    final data = jsonDecode(getYouTubePost.getYouTubePosts()) as List;
+    return data.map((e) => Post(e['title'], e['description'], PostSource.youtube)).toList();
+  }
+
+}
+
+class GetInstaPostAdapter implements GetPost{
+
+  final GetInstaPost getInstaPost = GetInstaPost();
+
+  @override
+  List<Post> getPost() {
+    final data = jsonDecode(getInstaPost.getInstaPost()) as List;
+    return data.map((e) => Post(e['heading'], e['subHeading'], PostSource.instagram)).toList();
+  }
+
+}
+
+class GetAllPosts implements GetPost{
+  final GetInstaPostAdapter getInstaPostAdapter = GetInstaPostAdapter();
+  final GetYouTubePostAdapter getYouTubePostAdapter = GetYouTubePostAdapter();
+  @override
+  List<Post> getPost() {
+    return getYouTubePostAdapter.getPost() + getInstaPostAdapter.getPost();
+  }
+
+}
+
+class Post {
+  String title;
+  String subTitle;
+  PostSource source;
+
+  Post(this.title, this.subTitle, this.source);
+}
+
+enum PostSource  {youtube, instagram}
+
+//-------------------------adapter_DP_example.dart------------------------>
+
+
+import 'package:flutter/material.dart';
+import 'package:testing/utils/code_text.dart';
+import 'package:testing/utils/common_images.dart';
+import '../../../utils/common_widget_classes.dart';
+import '../../../utils/constants.dart';
+import 'adapter_DP.dart';
+
+class AdapterDpExample extends StatelessWidget {
+  AdapterDpExample({super.key});
+  final getAllPosts = GetAllPosts();
+
+  List points = [
+    "Convert the interface of a class into another interface clients expect. Adapter lets classes work together that couldn’t otherwise because of incompatible interfaces.",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+          'Adapter',
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i)=>pointItem(point: points[i]), separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: points.length),
+            const SizedBox(height: 30,),
+            ListView.separated(shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, i){
+              Post post = getAllPosts.getPost()[i];
+              return postComponent(post);
+            }, separatorBuilder: (context, i)=> const SizedBox(height: 10,), itemCount: getAllPosts.getPost().length),
+            const SizedBox(height: 30,),
+            const CommonShowCode(codeText: CodeText.flutterAnimationExample1,),
+            const SizedBox(height: 30,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget postComponent(Post post){
+  return ListTile(
+    leading: Image.asset(getImage(post.source), width: 50, height: 50,),
+    title: Text(post.title, style: googleFontStyle(),),
+    subtitle: Text(post.subTitle),
+  );
+}
+
+String getImage(PostSource source){
+  switch(source){
+    case PostSource.youtube:
+      return CommonImages.youtubeIcon;
+    case PostSource.instagram:
+      return CommonImages.instaIcon;
+    default:
+      return CommonImages.youtubeIcon;
+  }
+}
+
+
+  ''';
 }
