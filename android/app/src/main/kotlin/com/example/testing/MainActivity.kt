@@ -1,5 +1,7 @@
 package com.example.testing
 
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
@@ -12,6 +14,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity: FlutterActivity() {
     private val CHANNEL = "battery_channel"
+    private val CHANNEL_SENSOR = "sensor_utils"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -27,6 +30,23 @@ class MainActivity: FlutterActivity() {
                     result.error("UNAVAILABLE", "Battery level not available", null)
                 }
             }else{
+                result.notImplemented()
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_SENSOR).setMethodCallHandler { call, result ->
+            if (call.method == "isSensorAvailable") {
+                val sensorType = call.argument<String>("sensorType")
+                val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+
+                val sensor: Sensor? = when (sensorType) {
+                    "STEP_COUNTER" -> sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+                    "STEP_DETECTOR" -> sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
+                    else -> null
+                }
+
+                result.success(sensor != null)
+            } else {
                 result.notImplemented()
             }
         }

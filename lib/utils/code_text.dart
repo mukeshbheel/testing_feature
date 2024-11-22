@@ -4305,4 +4305,1025 @@ String getImage(PostSource source){
 
 
   ''';
+
+  static const String internalDrawerCode = '''
+  
+  //--------------------------------root_page.dart----------------------------->
+  
+  import 'package:flutter/material.dart';
+import 'package:testing/utils/constants.dart';
+
+import 'home_page.dart';
+
+class RootPage extends StatelessWidget {
+  const RootPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: [
+          Container(
+            width: 100, // Adjust width as needed
+            color: Colors.blue,
+            child: Center(
+              child: Text(
+                'Fixed Container',
+                style: googleFontStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(child: Navigator(
+            onGenerateRoute: (RouteSettings settings) {
+              return MaterialPageRoute(
+                builder: (context) => HomePage(),
+              );
+            },
+          ),)
+        ],
+      ),
+    );
+  }
+}
+
+
+
+//-----------------------------------home_page.dart---------------------------------->
+
+import 'package:flutter/material.dart';
+import '../../utils/code_text.dart';
+import '../../utils/common_widget_classes.dart';
+import '../../utils/constants.dart';
+
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
+  List points = [
+    "Adding a Fixed Colum Container before drawer",
+    "Create a different Navigator for the Inner Scaffold to separate drawer Navigation from outer Scaffold.",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home" , style: googleFontStyle(),),
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+        width: 200,
+        backgroundColor: Colors.brown,
+        child: Column(
+          children: [
+            const DrawerHeader(child: Icon(Icons.person),),
+            TextButton(onPressed: (){
+              Navigator.of(context).pop();
+            }, child: Text("Close", style: googleFontStyle(color: Colors.white),))
+          ],
+        ),
+      ),
+      drawerEnableOpenDragGesture: false,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20,),
+            Text(
+              'Internal Drawer in web',
+              style:
+              googleFontStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                  height: 10,
+                ),
+                itemCount: points.length),
+            const SizedBox(
+              height: 20,
+            ),
+            const CommonShowCode(
+              codeText: CodeText.multiThreadCode,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+  ''';
+
+  static const String jobSchedulerCronCode = '''
+  
+  import 'dart:async';
+
+import 'package:cron/cron.dart';
+import 'package:flutter/material.dart';
+import 'package:testing/utils/constants.dart';
+import 'package:testing/utils/extension_custom.dart';
+
+import '../utils/code_text.dart';
+import '../utils/common_widget_classes.dart';
+
+class JobSchedulerCronJob extends StatefulWidget {
+  JobSchedulerCronJob({super.key});
+
+  @override
+  State<JobSchedulerCronJob> createState() => _JobSchedulerCronJobState();
+}
+
+class _JobSchedulerCronJobState extends State<JobSchedulerCronJob> {
+  final cron = Cron();
+
+  ScheduledTask? scheduledTask;
+  String scheduledText = '';
+  StreamController isTaskRunningStreamController = StreamController<bool>();
+  late Stream isTaskRunningStream;
+
+  addToStream(bool status) {
+    isTaskRunningStreamController.sink.add(status);
+  }
+
+  List points = [
+    "Cron is a JobScheduler",
+    "Cron can schedule a task while the app is in foreground.",
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isTaskRunningStream = isTaskRunningStreamController.stream;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Cron JobScheduler",
+          style: googleFontStyle(),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+
+            Container(
+              width: double.infinity,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black),
+                child: StreamBuilder(
+                  stream: isTaskRunningStream,
+                  builder: (context, snapShot){
+                    final data = snapShot.data;
+                    if(data ?? false){
+                      return Text(
+                        "Task Status : Running",
+                        style: googleFontStyle(color: Colors.white),
+                      );
+                    }
+                    return Text(
+                      "Task Status : Not Running",
+                      style: googleFontStyle(color: Colors.white),
+                    );
+                  },
+                ),),
+            if(scheduledText.isNotEmpty)
+            Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black),
+                child: Text(
+                  scheduledText,
+                  style: googleFontStyle(color: Colors.white),
+                )),
+            Row(
+              children: [
+                Expanded(
+                    child: ElevatedButton(
+                  onPressed: scheduleTask,
+                  child: const Text("Schedule Task"),
+                )),
+                Expanded(
+                    child: ElevatedButton(
+                  onPressed: cancelTask,
+                  child: const Text("Cancel Task"),
+                )),
+              ].addGap(const SizedBox(
+                width: 10,
+              )),
+            ),
+            const CommonShowCode(
+              codeText: CodeText.jobSchedulerCronCode,
+            )
+          ].addGap(const SizedBox(height: 20)),
+        ),
+      ),
+    );
+  }
+
+  void scheduleTask() async {
+    try {
+      scheduledTask = cron.schedule(Schedule.parse('*/6 * * * * *'), () {
+        setState(() {
+          scheduledText =
+              'hello : the time is \${DateTime.now().toIso8601String()}';
+        });
+      });
+      addToStream(true);
+    } on ScheduleParseException {
+      // "ScheduleParseException" is thrown if cron parsing is failed.
+      debugPrint("something went wrong");
+      addToStream(false);
+      await cron.close();
+    }
+  }
+
+  void cancelTask() {
+    if (scheduledTask != null) {
+      scheduledTask!.cancel();
+      addToStream(false);
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cron.close();
+    isTaskRunningStreamController.close();
+    super.dispose();
+  }
+}
+
+  ''';
+
+  static const String accelerometerSensorCode = '''
+  import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:testing/utils/common_images.dart';
+import 'package:testing/utils/constants.dart';
+import 'package:testing/utils/extension_custom.dart';
+import '../../utils/code_text.dart';
+import '../../utils/common_widget_classes.dart';
+
+class AccelerometerFlutter extends StatefulWidget {
+  AccelerometerFlutter({super.key});
+
+  @override
+  State<AccelerometerFlutter> createState() => _AccelerometerFlutterState();
+}
+
+class _AccelerometerFlutterState extends State<AccelerometerFlutter> {
+  List points = [
+    "Package : sensors_plus",
+    "AccelerometerEvent describes the acceleration of the device, in m/s2, including the effects of gravity. This stream reports raw data from the accelerometer (physical sensor embedded in the mobile device) without any post-processing. The accelerometer is unable to distinguish between the effect of an accelerated movement of the device and the effect of the surrounding gravitational field. This means that, at the surface of Earth, even if the device is completely still, the reading of AccelerometerEvent is an acceleration of intensity 9.8 directed upwards (the opposite of the graviational acceleration). This can be used to infer information about the position of the device (horizontal/vertical/tilted). AccelerometerEvent reports zero acceleration if the device is free falling.",
+  ];
+
+  late StreamSubscription _streamSubscription;
+  double prevXAngle = 0.0;
+  double xAngle = 0.0;
+  double prevYAngle = 0.0;
+  double yAngle = 0.0;
+  double prevZAngle = 0.0;
+  double zAngle = 0.0;
+  double width = 450;
+  double height = 700;
+
+  @override
+  void initState() {
+    _streamSubscription = accelerometerEventStream().listen(
+      (AccelerometerEvent event) {
+        print(event);
+        setState(() {
+          prevXAngle = xAngle;
+          xAngle = event.x;
+          prevYAngle = yAngle;
+          yAngle = double.parse(event.y.toString());
+          prevZAngle = zAngle;
+          zAngle = double.parse(event.z.toString());
+        });
+      },
+      onError: (error) {
+        // Logic to handle error
+        // Needed for Android in case sensor is not available
+      },
+      cancelOnError: true,
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          "Accelerometer",
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 500,
+              decoration: const BoxDecoration(color: Colors.black),
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    left: xAngle * -3,
+                    right: xAngle * 3,
+                    top: zAngle * -3,
+                    bottom: zAngle * 3,
+                    duration: const Duration(milliseconds: 200),
+                    child: Center(
+                      child: TweenAnimationBuilder(
+                          tween: Tween(begin: prevXAngle, end: xAngle),
+                          duration: const Duration(milliseconds: 300),
+                          builder: (context, double xValue, _) {
+                            return TweenAnimationBuilder(
+                                tween: Tween(begin: prevZAngle, end: zAngle),
+                                duration: const Duration(milliseconds: 300),
+                                builder: (context, double zValue, _) {
+                                  return Transform(
+                                    origin: Offset(width / 2, height / 2),
+                                    transform: Matrix4.identity()
+                                      ..setEntry(2, 1, 0.001)
+                                      ..rotateX(-zValue / 30)
+                                      ..rotateY(xValue / 30),
+                                    child: Container(
+                                      width: width / 2,
+                                      height: height / 2,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                CommonImages.demoWallpaper),
+                                            fit: BoxFit.cover),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: Colors.grey.shade800),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                            Colors.black.withOpacity(0.3),
+                                            blurRadius: 10,
+                                            spreadRadius: 8,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          }),
+                    ),
+                  ),
+                  Positioned(bottom: 10, left: 0, right: 0, child: Text("Move the Phone to See the effect", style: googleFontStyle(color: Colors.white), textAlign: TextAlign.center,),),
+                ],
+              ),
+            ),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+
+
+            const CommonShowCode(
+              codeText: CodeText.accelerometerSensorCode,
+            )
+          ].addGap(const SizedBox(height: 20)),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription.cancel();
+  }
+}
+
+  ''';
+
+  static const String gyroscopeSensorCode = '''
+  
+  import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:testing/utils/common_images.dart';
+import 'package:testing/utils/constants.dart';
+import 'package:testing/utils/extension_custom.dart';
+import '../../utils/code_text.dart';
+import '../../utils/common_widget_classes.dart';
+
+class GyroscopeFlutter extends StatefulWidget {
+  const GyroscopeFlutter({super.key});
+
+  @override
+  State<GyroscopeFlutter> createState() => _GyroscopeFlutterState();
+}
+
+class _GyroscopeFlutterState extends State<GyroscopeFlutter> {
+  List points = [
+    "Package : sensors_plus",
+    "Gyroscopes measure the rate or rotation of the device in 3D space.",
+    "Rate of rotation around the x, y and z axes measured in rad/s."
+  ];
+
+  late StreamSubscription _streamSubscription;
+  double xAngle = 0.0;
+  double yAngle = 0.0;
+  double zAngle = 0.0;
+  double width = 450;
+  double height = 700;
+  DateTime timeStamps = DateTime.now();
+
+  @override
+  void initState() {
+    _streamSubscription = gyroscopeEventStream().listen(
+      (GyroscopeEvent event) {
+        setState(() {
+          xAngle = event.x;
+          timeStamps = event.timestamp;
+          yAngle = double.parse(event.y.toString());
+          zAngle = double.parse(event.z.toString());
+        });
+      },
+      onError: (error) {
+        // Logic to handle error
+        // Needed for Android in case sensor is not available
+      },
+      cancelOnError: true,
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          "Gyroscope",
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(15),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.black),
+              child: Column(
+                children: [
+                  Text(
+                    "Rotate Velocity Z Axis",
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                  Text(
+                    zAngle.toString(),
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 500,
+              decoration: const BoxDecoration(color: Colors.black),
+              child: Stack(
+                children: [
+                  AnimatedContainer(
+                    // turns: -zAngle/(2*pi),
+                    duration: const Duration(milliseconds: 100),
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationZ(-zAngle),
+                      // angle: -zAngle/(2*pi),
+                      child: Center(
+                          child: Container(
+                        width: width / 2,
+                        height: height / 2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(CommonImages.demoWallpaper),
+                              fit: BoxFit.cover),
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade800),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 10,
+                              spreadRadius: 8,
+                            ),
+                          ],
+                        ),
+                      )),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    child: Text(
+                      "Move the Phone to See the effect",
+                      style: googleFontStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+            const CommonShowCode(
+              codeText: CodeText.gyroscopeSensorCode,
+            )
+          ].addGap(const SizedBox(height: 20)),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription.cancel();
+  }
+}
+
+  ''';
+
+  static const String magnetometerSensorCode = '''
+  
+  import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:testing/utils/constants.dart';
+import 'package:testing/utils/extension_custom.dart';
+import '../../utils/code_text.dart';
+import '../../utils/common_widget_classes.dart';
+import 'dart:math';
+
+class MagnetometerFlutter extends StatefulWidget {
+  const MagnetometerFlutter({super.key});
+
+  @override
+  State<MagnetometerFlutter> createState() => _MagnetometerFlutterState();
+}
+
+class _MagnetometerFlutterState extends State<MagnetometerFlutter> {
+  List points = [
+    "Package : sensors_plus",
+    "Magnetometers measure the ambient magnetic field surrounding the sensor, returning values in microteslas ***μT*** for each three-dimensional axis.",
+  ];
+
+  late StreamSubscription _streamSubscription;
+  double xAngle = 0.0;
+  double yAngle = 0.0;
+  double zAngle = 0.0;
+  double _magneticValue = 0.0;
+
+  @override
+  void initState() {
+    _streamSubscription = magnetometerEventStream().listen(
+      (MagnetometerEvent event) {
+        final magneticField = sqrt(event.x*event.x + event.y*event.y + event.z*event.z);
+        setState(() {
+          _magneticValue = magneticField;
+        });
+      },
+      onError: (error) {
+        // Logic to handle error
+        // Needed for Android in case sensor is not available
+      },
+      cancelOnError: true,
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          "Magnetometer",
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(15),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.black),
+              child: Column(
+                children: [
+                  Text(
+                    "Magnetic Value",
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                  Text(
+                    _magneticValue.toString(),
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            _getRadialGauge(),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+            const CommonShowCode(
+              codeText: CodeText.magnetometerSensorCode,
+            )
+          ].addGap(const SizedBox(height: 20)),
+        ),
+      ),
+    );
+  }
+
+  Widget _getRadialGauge() {
+    return SfRadialGauge(
+        title: const GaugeTitle(
+            text: 'MagnetoMeter',
+            textStyle:
+            TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+        axes: <RadialAxis>[
+          RadialAxis(minimum: 0, maximum: 150,
+              ranges: <GaugeRange>[
+            GaugeRange(
+                startValue: 0,
+                endValue: 150,
+                gradient: const SweepGradient(
+                    colors: <Color>[Color(0xFFEDFAFF), Color(0xFF012DFF)],
+                    stops: <double>[0.25, 0.75]),
+                startWidth: 10,
+                endWidth: 15),
+          ], pointers: <GaugePointer>[
+            NeedlePointer(value: _magneticValue)
+          ], annotations: <GaugeAnnotation>[
+            GaugeAnnotation(
+                widget: Text(_magneticValue.toStringAsFixed(0),
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.bold)),
+                angle: 90,
+                positionFactor: 0.5)
+          ])
+        ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription.cancel();
+  }
+}
+
+  ''';
+
+  static const String barometerSensorCode = '''
+  
+  import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:testing/utils/common_snackbar.dart';
+import 'package:testing/utils/constants.dart';
+import 'package:testing/utils/extension_custom.dart';
+import '../../utils/code_text.dart';
+import '../../utils/common_widget_classes.dart';
+
+class BarometerFlutter extends StatefulWidget {
+  const BarometerFlutter({super.key});
+
+  @override
+  State<BarometerFlutter> createState() => _BarometerFlutterState();
+}
+
+class _BarometerFlutterState extends State<BarometerFlutter> {
+  List points = [
+    "Package : sensors_plus",
+    "Barometers measure the atmospheric pressure surrounding the sensor, returning values in hectopascals ***hPa***.",
+  ];
+
+  late StreamSubscription _streamSubscription;
+  double _pressureValue = 0.0;
+
+  @override
+  void initState() {
+    _streamSubscription = barometerEventStream().listen(
+      (BarometerEvent event) {
+        print(event.toString());
+        setState(() {
+          _pressureValue = event.pressure;
+        });
+      },
+      onError: (error) {
+        debugPrint(error.toString());
+
+        if(error is PlatformException){
+          CommonSnackbar.showError(context: context, message: error.details ?? '');
+        }
+      },
+      cancelOnError: true,
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          "Barometer",
+          style: googleFontStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(15),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.black),
+              child: Column(
+                children: [
+                  Text(
+                    "Pressure Value",
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                  Text(
+                    _pressureValue.toString(),
+                    style: googleFontStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            _getRadialGauge(),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => pointItem(point: points[i]),
+                separatorBuilder: (context, i) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: points.length),
+            const CommonShowCode(
+              codeText: CodeText.barometerSensorCode,
+            )
+          ].addGap(const SizedBox(height: 20)),
+        ),
+      ),
+    );
+  }
+
+  Widget _getRadialGauge() {
+    return SfRadialGauge(
+        title: const GaugeTitle(
+            text: 'Barometer(hPa)',
+            textStyle:
+            TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+        axes: <RadialAxis>[
+          RadialAxis(minimum: 900, maximum: 1100,
+              ranges: <GaugeRange>[
+            GaugeRange(
+                startValue: 900,
+                endValue: 1100,
+                gradient: const SweepGradient(
+                    colors: <Color>[Color(0xFFEDFAFF), Color(0xFF012DFF)],
+                    stops: <double>[0.25, 0.75]),
+                startWidth: 10,
+                endWidth: 15),
+          ], pointers: <GaugePointer>[
+            NeedlePointer(value: _pressureValue)
+          ], annotations: <GaugeAnnotation>[
+            GaugeAnnotation(
+                widget: Text(_pressureValue.toStringAsFixed(0),
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.bold)),
+                angle: 90,
+                positionFactor: 0.5)
+          ])
+        ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription.cancel();
+  }
+}
+
+  ''';
+
+  static const String inactivityTrackingCode = '''
+  
+  //----------------------------welcome_inactivity_tracking.dart------------------------------>
+  
+  
+  import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:testing/features/inactivity_tracking/login_inactivity_tracking.dart';
+import 'package:testing/utils/constants.dart';
+
+class WelcomeInactivityTracking extends StatefulWidget {
+  const WelcomeInactivityTracking({super.key});
+
+  @override
+  State<WelcomeInactivityTracking> createState() => _WelcomeInactivityTrackingState();
+}
+
+class _WelcomeInactivityTrackingState extends State<WelcomeInactivityTracking> with WidgetsBindingObserver {
+
+  Timer? inactivityTimer;
+  final Duration inactivityDuration = const Duration(seconds: 15);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _startBackgroundTimer(){
+    debugPrint("_startBackgroundTimer called");
+    inactivityTimer?.cancel();
+    inactivityTimer = Timer(inactivityDuration, _onBackgroundInactivityDetected);
+  }
+
+  void _cancelBackgroundTimer(){
+    debugPrint("_cancelBackgroundTimer called");
+    inactivityTimer?.cancel();
+  }
+
+  void _onBackgroundInactivityDetected(){
+    // do logout and send to welcome screen
+    Get.until((route) => route.settings.name == '/WelcomeInactivityTracking');
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Inactivity Detected', style: googleFontStyle(),),
+        content: Text('You have been inactive for \${inactivityDuration.inSeconds} seconds. Please Login again to Continue.', style: googleFontStyle(),),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text('OK', style: googleFontStyle(),),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    WidgetsBinding.instance.removeObserver(this);
+    inactivityTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    // if(state == AppLifecycleState.paused){
+    //   _startBackgroundTimer();
+    // }else
+    if(state == AppLifecycleState.resumed){
+      _startBackgroundTimer();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: _startBackgroundTimer,      // Reset timer on taps
+      onPanUpdate: (_) => _startBackgroundTimer(),
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.lightBlueAccent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Welcome!',
+                style: googleFontStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Let\'s get started.',
+                style: googleFontStyle(
+                  fontSize: 18,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(LoginInactivityTracking());
+                  _startBackgroundTimer();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.blue, backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text(
+                  'Continue',
+                  style: googleFontStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+  ''';
 }

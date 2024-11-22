@@ -13,16 +13,22 @@ import 'package:testing/features/fl_charts.dart';
 import 'package:testing/features/flutter_animation_basics/flutter_animation_basics.dart';
 import 'package:testing/features/flutter_design_patterns/flutter_design_pattern.dart';
 import 'package:testing/features/flutter_ludo/flutter_ludo.dart';
+import 'package:testing/features/inactivity_tracking/welcome_inactivity_tracking.dart';
+import 'package:testing/features/internal_drawer/root_page.dart';
 import 'package:testing/features/mapples_function.dart';
 import 'package:testing/features/oval_shadow.dart';
+import 'package:testing/features/pedometer_flutter.dart';
 import 'package:testing/features/sync_vs_async.dart';
 import 'package:testing/features/web_socket_screen.dart';
 import 'package:testing/utils/constants.dart';
 
 import 'features/custom_clock.dart';
 import 'features/custom_painting_widgets.dart';
+import 'features/inactivity_tracking/inactivity_tracking.dart';
+import 'features/job_scheduler_cron_job.dart';
 import 'features/method_channel.dart';
 import 'features/multi_threading.dart';
+import 'features/sensors/sensors_flutter.dart';
 
 class FeaturesListings extends StatelessWidget {
   FeaturesListings({super.key});
@@ -129,6 +135,37 @@ class FeaturesListings extends StatelessWidget {
     {
       'title': 'Dynamic Components',
       'screen': DynamicComponents(),
+      'showWidget': true,
+      'component': null
+    },
+    {
+      'title': 'Internal Drawer In web',
+      'screen': RootPage(),
+      'showWidget': true,
+      'component': null
+    },
+    {
+      'title': 'JobScheduler Cron Job',
+      'screen': JobSchedulerCronJob(),
+      'showWidget': true,
+      'component': null
+    },
+    {
+      'title': 'Sensors',
+      'screen': SensorsFlutter(),
+      'showWidget': true,
+      'component': null
+    },
+
+    {
+      'title': 'Inactivity Tracking',
+      'screen': InactivityTracking(),
+      'showWidget': true,
+      'component': null
+    },
+    {
+      'title': 'Pedometer',
+      'screen': PedometerFlutter(),
       'showWidget': true,
       'component': null
     },
