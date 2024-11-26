@@ -80,30 +80,32 @@ class _AnimationExample1State extends State<AnimationExample1> with SingleTicker
                   borderRadius: BorderRadius.circular(10)
               ),
               child: Center(
-                child: AnimatedBuilder(
-                  animation: _controllerRotateAxis,
-                  builder: (context, child){
-                    return Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateY(_animationRotateAxis.value),
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blue,
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black87,
-                                  blurRadius: 7,
-                                  spreadRadius: 6,
-                                  offset: Offset(2,2)
-                              )
-                            ]
+                child: RepaintBoundary(
+                  child: AnimatedBuilder(
+                    animation: _controllerRotateAxis,
+                    builder: (context, child){
+                      return Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.identity()..rotateY(_animationRotateAxis.value),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue,
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black87,
+                                    blurRadius: 7,
+                                    spreadRadius: 6,
+                                    offset: Offset(2,2)
+                                )
+                              ]
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

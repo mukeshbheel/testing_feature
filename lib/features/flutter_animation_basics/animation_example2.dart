@@ -104,53 +104,55 @@ class _AnimationExample2State extends State<AnimationExample2> with TickerProvid
                   borderRadius: BorderRadius.circular(10)
               ),
               child: Center(
-                child: AnimatedBuilder(
-                  animation: _rotateAlongZAxisAnimation,
-                  builder: (context, child){
-                    return Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateZ(_rotateAlongZAxisAnimation.value),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AnimatedBuilder(
-                            animation: _flipAlongYAxisAnimation,
-                            builder: (context, child){
-                              return Transform(
-                                transform: Matrix4.identity()..rotateY(_flipAlongYAxisAnimation.value),
-                                alignment: Alignment.centerRight,
-                                child: ClipPath(
-                                  clipper: HalfCircleClipper(side: CircleSide.left),
-                                  child: Container(
-                                    width: 100,
-                                    height: 100,
-                                    color: Colors.blue,
+                child: RepaintBoundary(
+                  child: AnimatedBuilder(
+                    animation: _rotateAlongZAxisAnimation,
+                    builder: (context, child){
+                      return Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.identity()..rotateZ(_rotateAlongZAxisAnimation.value),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedBuilder(
+                              animation: _flipAlongYAxisAnimation,
+                              builder: (context, child){
+                                return Transform(
+                                  transform: Matrix4.identity()..rotateY(_flipAlongYAxisAnimation.value),
+                                  alignment: Alignment.centerRight,
+                                  child: ClipPath(
+                                    clipper: HalfCircleClipper(side: CircleSide.left),
+                                    child: Container(
+                                      width: 100,
+                                      height: 100,
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          AnimatedBuilder(
-                            animation: _flipAlongYAxisAnimation,
-                            builder: (context, child){
-                              return Transform(
-                                transform: Matrix4.identity()..rotateY(_flipAlongYAxisAnimation.value),
-                                alignment: Alignment.centerLeft,
-                                child: ClipPath(
-                                  clipper: HalfCircleClipper(side: CircleSide.right),
-                                  child: Container(
-                                    width: 100,
-                                    height: 100,
-                                    color: Colors.yellow,
+                                );
+                              },
+                            ),
+                            AnimatedBuilder(
+                              animation: _flipAlongYAxisAnimation,
+                              builder: (context, child){
+                                return Transform(
+                                  transform: Matrix4.identity()..rotateY(_flipAlongYAxisAnimation.value),
+                                  alignment: Alignment.centerLeft,
+                                  child: ClipPath(
+                                    clipper: HalfCircleClipper(side: CircleSide.right),
+                                    child: Container(
+                                      width: 100,
+                                      height: 100,
+                                      color: Colors.yellow,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

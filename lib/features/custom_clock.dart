@@ -89,11 +89,13 @@ class _CustomClockWidgetState extends State<CustomClockWidget> {
   Widget build(BuildContext context) {
     return Transform.rotate(
       angle: -pi / 2,
-      child: CustomPaint(
-        painter: ClockPainter(),
-        child: const SizedBox(
-          height: 200,
-          width: 200,
+      child: RepaintBoundary(
+        child: CustomPaint(
+          painter: ClockPainter(),
+          child: const SizedBox(
+            height: 200,
+            width: 200,
+          ),
         ),
       ),
     );

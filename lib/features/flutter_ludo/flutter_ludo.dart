@@ -166,7 +166,7 @@ class _FlutterLudoState extends State<FlutterLudo> {
                         child: Center(
                           child: SizedBox(
                             width: 50,
-                            child: Image.asset("assets/dice_${ludoController.diceNumber.value}.png"),
+                            child: Center(child: Image.asset("assets/dice_${ludoController.diceNumber.value}.png", cacheWidth: 137,)),
                           ),
                         ),
                       ),

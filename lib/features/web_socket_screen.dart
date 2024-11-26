@@ -34,15 +34,24 @@ class _WebSocketScreenState extends State<WebSocketScreen> {
 
       // Generate a v1 (time-based) id
       id = uuid.v1();
-      channel = WebSocketChannel.connect(Uri.parse("ws://echo.websocket.org"));
+      channel = WebSocketChannel.connect(Uri.parse("ws://192.168.1.3:6000"));
       await channel.ready;
       channel.stream.listen((message) {
-        debugPrint(message);
-        if(!message.toString().toLowerCase().contains("request served by")) {
+        if (message is Uint8List) {
+          // Convert the binary data to a string using utf8.decode
+          String decodedMessage = utf8.decode(message);
           setState(() {
-          chatMessages.add(jsonDecode(message));
-        });
+            chatMessages.add(jsonDecode(decodedMessage)); // Add decoded message to the list
+          });
+        } else if (message is String) {
+          // Handle text message directly
+          setState(() {
+            chatMessages.add(jsonDecode(message));
+          });
         }
+
+        debugPrint(chatMessages.toString());
+
       });
       setState(() {
 
@@ -69,6 +78,12 @@ class _WebSocketScreenState extends State<WebSocketScreen> {
         textFormField.clear();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close(status.goingAway);
+    super.dispose();
   }
 
   @override
